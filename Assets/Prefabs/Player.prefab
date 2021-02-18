@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 6776728173847817353}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Speed: 8
-  g: {fileID: 0}
+  m_Inventory: []
 --- !u!1 &6776728173887614119
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,6 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a9dda4d5c21ef140a50f9c45a7ee23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Player: {fileID: 6776728173847817362}
   m_PickUpText: {fileID: 6776728173887614105}
 --- !u!1 &6776728175299442593
 GameObject:

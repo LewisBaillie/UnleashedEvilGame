@@ -7,22 +7,22 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float m_Speed;
     [SerializeField]
-    private GameObject g;
+    List<GameObject> m_Inventory;
+
     private CharacterController m_Controller;
     private float m_Gravity = 9.81f;
 
     // Start is called before the first frame update
     void Start()
     {
-
         m_Controller = GetComponent<CharacterController>();
         NullCheckCharController();
+        NullCheckInventory();
     }
 
     // Update is called once per frame
     void Update()
     {
-
         CalculateMovement();
     }
 
@@ -55,5 +55,29 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("Character Controller on the Player was null");
         }
+    }
+    private void NullCheckInventory()
+    {
+        if(m_Inventory == null)
+        {
+            m_Inventory = new List<GameObject>();
+        }
+    }
+
+    public void AddObjectToInvent(GameObject go)
+    {
+        foreach (GameObject item in m_Inventory)
+        {
+            if (item.name == go.name && item.tag == go.tag)
+            {
+                return;
+            }
+        }
+        if (go.GetComponent<SceneObjects>() != null)
+        {
+            m_Inventory.Add(go);
+            return;
+        }
+        Debug.Log(go.name + " doesn't have the class SceneObjects attached so it hasn't been added to the inventory");
     }
 }
