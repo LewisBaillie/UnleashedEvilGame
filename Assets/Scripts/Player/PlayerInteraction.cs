@@ -13,6 +13,9 @@ public class PlayerInteraction : MonoBehaviour
     private ConcurrentBag<GameObject> m_ColliderCache;
     [SerializeField]
     private Text m_PickUpText;
+    //Toggles multithreading but causes a unity exception though it still does work
+    [SerializeField]
+    private bool m_UseMultithreading;
 
     // Start is called before the first frame update
     void Start()
@@ -69,7 +72,6 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
         bool result = m_ColliderCache.TryTake(out gObject);
-        Debug.Log("Take out was " + result);
     }
 
     private void HideText()
@@ -87,13 +89,27 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleInteractions()
     {
+
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Parallel.ForEach(m_ColliderCache, (item) => {
-                m_Player.GetComponent<Player>().AddObjectToInvent(item);
-                item.SetActive(false);
-                m_ColliderCache.TryTake(out item);
-            });
+            if(m_UseMultithreading)
+            {
+                Parallel.ForEach(m_ColliderCache, (item) => {
+                    m_Player.GetComponent<Player>().AddObjectToInvent(item);
+                    item.SetActive(false);
+                    m_ColliderCache.TryTake(out item);
+                });
+            }
+            else
+            {
+                GameObject[] goa = m_ColliderCache.ToArray();
+                for (int i = 0; i < goa.Length; i++)
+                {
+                    m_Player.GetComponent<Player>().AddObjectToInvent(goa[i]);
+                    goa[i].SetActive(false);
+                    m_ColliderCache.TryTake(out goa[i]);
+                }
+            }
         }
     }
 
