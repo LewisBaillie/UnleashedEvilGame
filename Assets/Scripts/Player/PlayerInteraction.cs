@@ -10,9 +10,14 @@ public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField]
     private GameObject m_Player;
+    [SerializeField]
+    private GameObject m_CurrentObject;
     private ConcurrentBag<GameObject> m_ColliderCache;
     [SerializeField]
     private Text m_PickUpText;
+    //Toggles multithreading but causes a unity exception though it still does work
+    [SerializeField]
+    private bool m_UseMultithreading;
 
     // Start is called before the first frame update
     void Start()
@@ -46,7 +51,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Non-Interactable" || other.tag == "Player")
+        if (other.tag == "Non-Interactable" || other.tag == "Player" || other.gameObject.GetComponent<SceneObjects>() == null || other.gameObject.GetComponent<SceneObjects>().m_IsEquipable != true)
         {
             return;
         }
@@ -69,7 +74,6 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
         bool result = m_ColliderCache.TryTake(out gObject);
-        Debug.Log("Take out was " + result);
     }
 
     private void HideText()
@@ -89,12 +93,93 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Parallel.ForEach(m_ColliderCache, (item) => {
-                m_Player.GetComponent<Player>().AddObjectToInvent(item);
-                item.SetActive(false);
-                m_ColliderCache.TryTake(out item);
-            });
+            if(m_UseMultithreading)
+            {
+                Parallel.ForEach(m_ColliderCache, (item) => {
+                    item.transform.parent = this.gameObject.transform;
+                    m_Player.GetComponent<Player>().AddObjectToInvent(item);
+                    item.SetActive(false);
+                    m_ColliderCache.TryTake(out item);
+                    HideText();
+                });
+            }
+            else
+            {
+                GameObject[] goa = m_ColliderCache.ToArray();
+                for (int i = 0; i < goa.Length; i++)
+                {
+                    goa[i].transform.parent = this.gameObject.transform;
+                    m_Player.GetComponent<Player>().AddObjectToInvent(goa[i]);
+                    goa[i].SetActive(false);
+                    m_ColliderCache.TryTake(out goa[i]);
+                    HideText();
+                }
+            }
+        }
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            if (m_CurrentObject != null)
+                m_CurrentObject.SetActive(false);
+            m_CurrentObject = m_Player.GetComponent<Player>().GrabObjectFromInvent(1);
+            if(m_CurrentObject != null)
+            {
+                m_CurrentObject.GetComponent<SceneObjects>().m_IsEquipable = false;
+                m_CurrentObject.GetComponent<SceneObjects>().m_IsEquipped = true;
+                m_CurrentObject.transform.localPosition = new Vector3(0.208f, -0.158f, -0.258f);
+                m_CurrentObject.SetActive(true);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            if (m_CurrentObject != null)
+                m_CurrentObject.SetActive(false);
+            m_CurrentObject = m_Player.GetComponent<Player>().GrabObjectFromInvent(1);
+            if (m_CurrentObject != null)
+            {
+                m_CurrentObject.GetComponent<SceneObjects>().m_IsEquipable = false;
+                m_CurrentObject.GetComponent<SceneObjects>().m_IsEquipped = true;
+                m_CurrentObject.transform.localPosition = new Vector3(0.208f, -0.158f, -0.258f);
+                m_CurrentObject.SetActive(true);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            if (m_CurrentObject != null)
+                m_CurrentObject.SetActive(false);
+            m_CurrentObject = m_Player.GetComponent<Player>().GrabObjectFromInvent(1);
+            if (m_CurrentObject != null)
+            {
+                m_CurrentObject.GetComponent<SceneObjects>().m_IsEquipable = false;
+                m_CurrentObject.GetComponent<SceneObjects>().m_IsEquipped = true;
+                m_CurrentObject.transform.localPosition = new Vector3(0.208f, -0.158f, -0.258f);
+                m_CurrentObject.SetActive(true);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            if (m_CurrentObject != null)
+                m_CurrentObject.SetActive(false);
+            m_CurrentObject = m_Player.GetComponent<Player>().GrabObjectFromInvent(1);
+            if (m_CurrentObject != null)
+            {
+                m_CurrentObject.GetComponent<SceneObjects>().m_IsEquipable = false;
+                m_CurrentObject.GetComponent<SceneObjects>().m_IsEquipped = true;
+                m_CurrentObject.transform.localPosition = new Vector3(0.208f, -0.158f, -0.258f);
+                m_CurrentObject.SetActive(true);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            if (m_CurrentObject != null)
+                m_CurrentObject.SetActive(false);
+            m_CurrentObject = m_Player.GetComponent<Player>().GrabObjectFromInvent(1);
+            if (m_CurrentObject != null)
+            {
+                m_CurrentObject.GetComponent<SceneObjects>().m_IsEquipable = false;
+                m_CurrentObject.GetComponent<SceneObjects>().m_IsEquipped = true;
+                m_CurrentObject.transform.localPosition = new Vector3(0.208f, -0.158f, -0.258f);
+                m_CurrentObject.SetActive(true);
+            }
         }
     }
-
 }

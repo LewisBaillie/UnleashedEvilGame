@@ -1,13 +1,123 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
 using UnityEngine;
+
+
 
 public class Player : MonoBehaviour
 {
+
+    private struct PlayerItem
+    {
+        private string _Tag;
+        private List<GameObject> _Objects;
+        public PlayerItem(GameObject go, string Tag)
+        {
+            _Objects = new List<GameObject>();
+            _Tag = Tag;
+            _Objects.Add(go);
+        }
+        public PlayerItem(GameObject go)
+        {
+            _Objects = new List<GameObject>();
+            _Tag = go.tag;
+            _Objects.Add(go);
+        }
+
+        private bool ObjectIsEigable(GameObject g)
+        {
+            if (g.tag == _Tag && !_Objects.Contains(g))
+            {
+                return true;
+            }
+            else return false;
+        }
+        private bool ObjectIsEigable(GameObject g, string tag)
+        {
+            if (tag == _Tag && !_Objects.Contains(g))
+            {
+                return true;
+            }
+            else return false;
+        }
+
+        //Adds a Unity GameObject to a list
+        public bool AddObject(GameObject g)
+        {
+            if (ObjectIsEigable(g))
+            {
+                _Objects.Add(g);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        //Adds a Unity GameObject to a list, takes an extra string for concurrent work loads
+        public bool AddObject(GameObject g, string tag)
+        {
+            if (ObjectIsEigable(g, tag))
+            {
+                _Objects.Add(g);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        //Returns the size a group of objects
+        public int SizeOfGroup()
+        {
+            return _Objects.Count;
+        }
+
+        //Allows you to return the first Object in the groups of objects
+        public GameObject GrabObject()
+        {
+            if (_Objects.Count > 0)
+                return _Objects[0];
+            else return null;
+        }
+        //Allows you to return a specified Object in the groups of objects
+        public GameObject GrabObject(int Pos)
+        {
+            if (_Objects.Count > Pos)
+            {
+                return _Objects[Pos];
+            }
+            else return null;
+        }
+        //Finds and removes a specified object
+        public void TakeOut(GameObject g)
+        {
+            if (_Objects.Contains(g))
+            {
+                for (int i = 0; i < _Objects.Count; i++)
+                {
+                    if(_Objects[i] == g)
+                    {
+                        _Objects.RemoveAt(i);
+                    }
+                }
+            }
+        }
+        //Finds and removes a specified position
+        public void TakeOut(int Pos)
+        {
+            _Objects.RemoveAt(Pos);
+        }
+    }
+
     [SerializeField]
     private float _Speed;
     [SerializeField]
-    List<GameObject> _Inventory;
+    ConcurrentDictionary<int,PlayerItem> _Inventory;
     [SerializeField]
     private bool _IsGravActive;
 
@@ -66,24 +176,58 @@ public class Player : MonoBehaviour
     {
         if(_Inventory == null)
         {
-            _Inventory = new List<GameObject>();
+            _Inventory = new ConcurrentDictionary<int, PlayerItem>();
         }
     }
 
     public void AddObjectToInvent(GameObject go)
     {
-        foreach (GameObject item in _Inventory)
+        string Tag = go.tag;
+        if (_Inventory.Count == 0)
         {
-            if (item.name == go.name && item.tag == go.tag)
+            CreateInventorySpace(go);
+        }
+        Parallel.ForEach(_Inventory, (item) => { 
+            bool result = item.Value.AddObject(go, Tag);
+            if (!result)
             {
-                return;
-            }
-        }
-        if (go.GetComponent<SceneObjects>() != null)
-        {
-            _Inventory.Add(go);
-            return;
-        }
-        Debug.Log(go.name + " doesn't have the class SceneObjects attached so it hasn't been added to the inventory");
+                CreateInventorySpace(go, Tag);
+            } 
+        });
+    }
+
+    private void CreateInventorySpace(GameObject go)
+    {
+        PlayerItem PI = new PlayerItem(go);
+        _Inventory.TryAdd(_Inventory.Count + 1, PI);
+    }
+
+    private void CreateInventorySpace(GameObject go, string Tag)
+    {
+        PlayerItem PI = new PlayerItem(go, Tag);
+        _Inventory.TryAdd(_Inventory.Count + 1, PI);
+    }
+
+    public GameObject GrabObjectFromInvent(int Place)
+    {
+        PlayerItem _PlayerItem;
+        _Inventory.TryGetValue(Place, out _PlayerItem);
+        return _PlayerItem.GrabObject();
+    }
+
+    public void RemoveObject(GameObject go)
+    {
+        Parallel.ForEach(_Inventory, (item) => { item.Value.TakeOut(go); });
+
+        Parallel.For(0, _Inventory.Count, index => {
+            PlayerItem _PlayerItem;
+            _Inventory.TryGetValue(index, out _PlayerItem);
+            if (_PlayerItem.SizeOfGroup() == 0)
+            {
+                _Inventory.TryRemove(index, out _PlayerItem);
+            };
+        });
+       
+
     }
 }
