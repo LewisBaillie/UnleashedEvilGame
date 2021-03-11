@@ -100,7 +100,7 @@ public class Player : MonoBehaviour
             {
                 for (int i = 0; i < _Objects.Count; i++)
                 {
-                    if(_Objects[i] == g)
+                    if (_Objects[i] == g)
                     {
                         _Objects.RemoveAt(i);
                     }
@@ -117,12 +117,25 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _Speed;
     [SerializeField]
-    ConcurrentDictionary<int,PlayerItem> _Inventory;
+    private float _StandHeight;
+    [SerializeField]
+    private float _CrouchHeight;
+    [SerializeField]
+    private float _CrouchAnimSpeed;
     [SerializeField]
     private bool _IsGravActive;
-
-    private CharacterController m_Controller;
+    [SerializeField]
+    private bool _IsCrouched;
+    [SerializeField]
+    private bool _CanStand;
+    [SerializeField]
     private float m_Gravity = 9.81f;
+
+
+    private ConcurrentDictionary<int, PlayerItem> _Inventory;
+    private CharacterController m_Controller;
+    private float _Time = 0;
+    private float _CrouchHeightCache;
 
     // Start is called before the first frame update
     void Start()
@@ -135,9 +148,42 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        HieghtMaipulation();
         CalculateMovement();
     }
 
+    private void HieghtMaipulation()
+    {
+        _Time += Time.deltaTime / _CrouchAnimSpeed;
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (_IsCrouched && _CanStand)
+            {
+                _IsCrouched = false;
+                CalculateHeight();
+                _Time = 0;
+            }
+            else
+            {
+                _IsCrouched = true;
+                CalculateHeight();
+                _Time = 0;
+            }
+        }
+    }
+
+    private void CalculateHeight()
+    {
+
+        if (_IsCrouched)
+        {
+            transform.localScale = new Vector3(transform.localScale.x, Mathf.Lerp(transform.localScale.y, _CrouchHeight, _Time), transform.localScale.z);
+        }
+        else
+        {
+            transform.localScale = new Vector3(transform.localScale.x, Mathf.Lerp(transform.localScale.y, _StandHeight, _Time), transform.localScale.z);
+        }
+    }
     private void CalculateMovement()
     {
         Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
@@ -227,7 +273,41 @@ public class Player : MonoBehaviour
                 _Inventory.TryRemove(index, out _PlayerItem);
             };
         });
-       
-
     }
+
+    public bool IsStanding()
+    {
+        if(_IsCrouched)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public void HeadCollison(bool val)
+    {
+        if(val)
+        {
+            _CanStand = false;
+        }
+        else
+        {
+            _CanStand = true;
+        }
+    }
+    public void HeadCollison(bool val, float NewCrouchHeight)
+    {
+        if (val)
+        {
+            _CrouchHeightCache = _CrouchHeight;
+            _CrouchHeight = NewCrouchHeight;
+            _CanStand = false;
+        }
+        else
+        {
+            _CanStand = true;
+            _CrouchHeight = _CrouchHeightCache;
+        }
+    }
+
 }
