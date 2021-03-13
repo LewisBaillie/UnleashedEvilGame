@@ -6,5 +6,4 @@ public class SceneObjects : MonoBehaviour
 {
     public bool m_IsEquipable = false;
     public bool m_IsEquipped { get; set; } = false;
-
 }

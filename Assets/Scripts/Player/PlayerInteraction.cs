@@ -91,6 +91,20 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleInteractions()
     {
+        if (!m_Player.GetComponent<Player>().IsStanding() && m_CurrentObject )
+        {
+            m_CurrentObject.SetActive(false);
+            return;
+        }
+
+        if (m_CurrentObject && !m_CurrentObject.activeSelf)
+        {
+            if (m_Player.GetComponent<Player>().IsStanding())
+            {
+                m_CurrentObject.SetActive(true);
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             if(m_UseMultithreading)
