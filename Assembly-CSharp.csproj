@@ -74,6 +74,7 @@
     <Compile Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Scripts\BloomAndFlares.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Scripts\Blur.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Scripts\MotionBlur.cs" />
+    <Compile Include="Assets\Scripts\Player\Head.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Scripts\Bloom.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Utility\WaypointProgressTracker.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Scripts\ScreenSpaceAmbientObscurance.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Scripts\BloomOptimized.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Utility\CurveControlledBob.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Utility\DragRigidbody.cs" />
+    <Compile Include="Assets\Scripts\PointLightAnim.cs" />
     <Compile Include="Assets\Scripts\Player\LookX.cs" />
     <Compile Include="Assets\Assets\Standard Assets\CrossPlatformInput\Scripts\Joystick.cs" />
     <Compile Include="Assets\DefaultCrap\TutorialInfo\Scripts\Readme.cs" />
@@ -116,6 +118,7 @@
     <Compile Include="Assets\Assets\Standard Assets\CrossPlatformInput\Scripts\CrossPlatformInputManager.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Scripts\ContrastEnhance.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Utility\DynamicShadowSettings.cs" />
+    <Compile Include="Assets\Scripts\Scene Objects\Stealth Related scripts\CrouchCover.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Scripts\NoiseAndGrain.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Utility\SimpleActivatorMenu.cs" />
     <Compile Include="Assets\Scripts\AI\Navmesh.cs" />
@@ -146,7 +149,6 @@
     <Compile Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Scripts\Tonemapping.cs" />
     <Compile Include="Assets\Scripts\Player\LookY.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Utility\AutoMobileShaderSwitch.cs" />
-    <Compile Include="Assets\Scripts\PointLightAnim.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Shaders\Tonemapper.shader" />
