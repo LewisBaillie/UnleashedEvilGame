@@ -114,12 +114,13 @@ MonoBehaviour:
   _Speed: 8
   _JumpStrength: 100
   _JumpSpeed: 8
+  _SprintSpeed: 0
   _StandHeight: 4
   _CrouchHeight: 1
   _CrouchAnimSpeed: 0.1
   _IsCrouched: 0
   _CanStand: 1
-  _IsGravActive: 0
+  _IsGravActive: 1
   _Gravity: 9.81
 --- !u!114 &173408943
 MonoBehaviour:
@@ -136,7 +137,10 @@ MonoBehaviour:
   _Player: {fileID: 173408942}
   _UI: {fileID: 6776728173887614105}
   _RayOutput: {fileID: 6776728175373570070}
-  _ArmLength: 5
+  _ArmLength: 10
+  _ObjectInHand: {fileID: 0}
+  _ThrowStengths: {x: 0, y: 2, z: 4}
+  _HandPosition: {x: 0.35, y: 0.27, z: 0.445}
 --- !u!1 &6776728173887614119
 GameObject:
   m_ObjectHideFlags: 0

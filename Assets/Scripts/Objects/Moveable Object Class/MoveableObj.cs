@@ -15,6 +15,8 @@ public class MoveableObj : Obj
     private float _JumpStrength;
     [SerializeField]
     private float _JumpSpeed;
+    [SerializeField]
+    private float _SprintSpeed;
     [Header("Crouch Settings")]
     [Tooltip("Controls factors to do with crouching")]
     [SerializeField]
@@ -81,7 +83,14 @@ public class MoveableObj : Obj
     protected void CalculateMovement()
     {
         Vector3 dir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        Move(ConvertToWorldSpace(ApplyGravity(CalculateJumpHeight(dir) * _Speed))); ;
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            Move(ConvertToWorldSpace(ApplyGravity(CalculateJumpHeight(dir) * (_Speed + _SprintSpeed))));
+        }
+        else
+        {
+            Move(ConvertToWorldSpace(ApplyGravity(CalculateJumpHeight(dir) * _Speed)));
+        }
     }
     //Calculates movement, values are passed through the function
     protected void CalculateMovement(Vector3 direction)
@@ -127,6 +136,11 @@ public class MoveableObj : Obj
     protected Vector3 ConvertToWorldSpace(Vector3 direction)
     {
         return transform.TransformDirection(direction);
+    }
+
+    public void SetGravity(bool val)
+    {
+        _IsGravActive = val;
     }
 
     protected float ReturnSpeed()

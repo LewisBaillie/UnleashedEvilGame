@@ -40,93 +40,138 @@ public class HandObj : Obj
         HandleHoldingObjects();
     }
 
+    //This function controls what objects the user is handling and this current time.
     private void HandleHoldingObjects()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (_ObjectInHand.GetComponent<Obj>() != null)
+            if (_ObjectInHand.GetComponent<Obj>() != null || _ObjectInHand != null)
             {
                 switch (_ObjectInHand.GetComponent<Obj>().ReturnObjectType())
                 {
                     case ObjectType.ThrowingObj:
                         {
                             _ObjectInHand.transform.parent = null;
+                            _ObjectInHand.GetComponent<MoveableObj>().SetGravity(true);
                             _ObjectInHand.GetComponent<ThrowingObj>().AddForce(_ThrowStengths);
+                            _Player.ReturnInventory().RemoveObject(_ObjectInHand);
+                            _ObjectInHand = null;
                             break;
                         }
                 }
 
             }
         }
-        if(Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(0);
-            _ObjectInHand.SetActive(true);
-            _ObjectInHand.transform.parent = this.transform;
-            _ObjectInHand.transform.localPosition = _HandPosition;
+            if (_ObjectInHand != null)
+            {
+                _ObjectInHand.SetActive(true);
+                _ObjectInHand.transform.parent = this.transform;
+                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
+                _ObjectInHand.transform.localPosition = _HandPosition;
+            }
+
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(1);
-            _ObjectInHand.SetActive(true);
-            _ObjectInHand.transform.parent = this.transform;
-            _ObjectInHand.transform.localPosition = _HandPosition;
+            if (_ObjectInHand != null)
+            {
+                _ObjectInHand.SetActive(true);
+                _ObjectInHand.transform.parent = this.transform;
+                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
+                _ObjectInHand.transform.localPosition = _HandPosition;
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(2);
-            _ObjectInHand.SetActive(true);
-            _ObjectInHand.transform.parent = this.transform;
-            _ObjectInHand.transform.localPosition = _HandPosition;
+            if (_ObjectInHand != null)
+            {
+                _ObjectInHand.SetActive(true);
+                _ObjectInHand.transform.parent = this.transform;
+                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
+                _ObjectInHand.transform.localPosition = _HandPosition;
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(3);
-            _ObjectInHand.SetActive(true);
-            _ObjectInHand.transform.parent = this.transform;
-            _ObjectInHand.transform.localPosition = _HandPosition;
+            if (_ObjectInHand != null)
+            {
+                _ObjectInHand.SetActive(true);
+                _ObjectInHand.transform.parent = this.transform;
+                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
+                _ObjectInHand.transform.localPosition = _HandPosition;
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(4);
-            _ObjectInHand.SetActive(true);
-            _ObjectInHand.transform.parent = this.transform;
-            _ObjectInHand.transform.localPosition = _HandPosition;
+            if (_ObjectInHand != null)
+            {
+                _ObjectInHand.SetActive(true);
+                _ObjectInHand.transform.parent = this.transform;
+                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
+                _ObjectInHand.transform.localPosition = _HandPosition;
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(5);
-            _ObjectInHand.SetActive(true);
-            _ObjectInHand.transform.parent = this.transform;
-            _ObjectInHand.transform.localPosition = _HandPosition;
+            if (_ObjectInHand != null)
+            {
+                _ObjectInHand.SetActive(true);
+                _ObjectInHand.transform.parent = this.transform;
+                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
+                _ObjectInHand.transform.localPosition = _HandPosition;
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(6);
-            _ObjectInHand.SetActive(true);
-            _ObjectInHand.transform.parent = this.transform;
-            _ObjectInHand.transform.localPosition = _HandPosition;
+            if (_ObjectInHand != null)
+            {
+                _ObjectInHand.SetActive(true);
+                _ObjectInHand.transform.parent = this.transform;
+                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
+                _ObjectInHand.transform.localPosition = _HandPosition;
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(7);
-            _ObjectInHand.SetActive(true);
-            _ObjectInHand.transform.parent = this.transform;
-            _ObjectInHand.transform.localPosition = _HandPosition;
+            if (_ObjectInHand != null)
+            {
+                _ObjectInHand.SetActive(true);
+                _ObjectInHand.transform.parent = this.transform;
+                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
+                _ObjectInHand.transform.localPosition = _HandPosition;
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha8))
         {
             _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(8);
-            _ObjectInHand.SetActive(true);
-            _ObjectInHand.transform.parent = this.transform;
-            _ObjectInHand.transform.localPosition = _HandPosition;
+            if (_ObjectInHand != null)
+            {
+                _ObjectInHand.SetActive(true);
+                _ObjectInHand.transform.parent = this.transform;
+                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
+                _ObjectInHand.transform.localPosition = _HandPosition;
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha9))
         {
             _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(9);
-            _ObjectInHand.SetActive(true);
-            _ObjectInHand.transform.parent = this.transform;
-            _ObjectInHand.transform.localPosition = _HandPosition;
+            if (_ObjectInHand != null)
+            { 
+                _ObjectInHand.SetActive(true);
+                _ObjectInHand.transform.parent = this.transform;
+                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
+                _ObjectInHand.transform.localPosition = _HandPosition;
+            }
         }
     }
 
@@ -146,50 +191,55 @@ public class HandObj : Obj
             GameObject g = hit.collider.gameObject;
             if (g.GetComponent<Obj>() != null)
             {
-                switch (g.GetComponent<Obj>().ReturnObjectType())
+                if (!_Player.ReturnInventory().Contains(g))
                 {
-                    default:
-                        _UI.enabled = false;
-                        break;
-                    case 0:
-                        {
+                    switch (g.GetComponent<Obj>().ReturnObjectType())
+                    {
+                        default:
                             _UI.enabled = false;
                             break;
-                        }
-                    case ObjectType.InteractableObj:
-                        {
-                            _UI.enabled = true;
-                            _UI.text = "Pick Up " + g.name;
-                            if (Input.GetKeyDown(KeyCode.E))
+                        case 0:
                             {
-                                g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
-                                _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
-                                g.SetActive(false);
+                                _UI.enabled = false;
+                                break;
                             }
-                            break;
-                        }
-                    case ObjectType.ThrowingObj:
-                        {
-                            _UI.enabled = true;
-                            _UI.text = "Pick Up " + g.name;
-                            if (Input.GetKeyDown(KeyCode.E))
+                        case ObjectType.InteractableObj:
                             {
-                                _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
-                                g.SetActive(false);
-                            }
-                            break;
-                        }
 
+                                _UI.enabled = true;
+                                _UI.text = "Pick Up " + g.name;
+                                if (Input.GetKeyDown(KeyCode.E))
+                                {
+                                    g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
+                                    _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
+                                    g.SetActive(false);
+                                }
+                                break;
+                            }
+                        case ObjectType.ThrowingObj:
+                            {
+                                _UI.enabled = true;
+                                _UI.text = "Pick Up " + g.name;
+                                if (Input.GetKeyDown(KeyCode.E))
+                                {
+                                    g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
+                                    _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
+                                    g.SetActive(false);
+                                }
+                                break;
+                            }
+
+                    }
+                }
+                else
+                {
+                    _UI.enabled = false;
                 }
             }
             else
             {
                 _UI.enabled = false;
             }
-        }
-        else
-        {
-            _UI.enabled = false;
-        }
+        }    
     }
 }
