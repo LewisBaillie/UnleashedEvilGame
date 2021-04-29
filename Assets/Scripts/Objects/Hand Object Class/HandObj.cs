@@ -23,6 +23,8 @@ public class HandObj : Obj
     private Vector3 _ThrowStengths;
     [SerializeField]
     private Vector3 _HandPosition;
+    [SerializeField]
+    private KeyCode _PickUpKey;
 
     // Start is called before the first frame update
     void Start()
@@ -208,7 +210,7 @@ public class HandObj : Obj
 
                                 _UI.enabled = true;
                                 _UI.text = "Pick Up " + g.name;
-                                if (Input.GetKeyDown(KeyCode.E))
+                                if (Input.GetKeyDown(_PickUpKey))
                                 {
                                     g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
                                     _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
@@ -220,7 +222,7 @@ public class HandObj : Obj
                             {
                                 _UI.enabled = true;
                                 _UI.text = "Pick Up " + g.name;
-                                if (Input.GetKeyDown(KeyCode.E))
+                                if (Input.GetKeyDown(_PickUpKey))
                                 {
                                     g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
                                     _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);

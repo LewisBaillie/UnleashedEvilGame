@@ -7,14 +7,15 @@ using UnityEngine;
 /// </summary>
 public class MoveableObj : Obj
 {
+    [Header("Control Settings")]
+    [SerializeField]
+    private KeyCode _RunKey = KeyCode.LeftShift;
+    [SerializeField]
+    private KeyCode _CrouchKey = KeyCode.C;
     [Header("Movement Settings")]
     [Tooltip("Controls factors to do with movement")]
     [SerializeField]
     private float _Speed;
-    [SerializeField]
-    private float _JumpStrength;
-    [SerializeField]
-    private float _JumpSpeed;
     [SerializeField]
     private float _SprintSpeed;
     [Header("Crouch Settings")]
@@ -58,19 +59,6 @@ public class MoveableObj : Obj
         return direction;
     }
 
-    //Calculates the height of a jump. extremely basic, because we may not want a jump func
-    private Vector3 CalculateJumpHeight(Vector3 direction)
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _Time += Time.deltaTime / _JumpSpeed;
-            direction.y += Mathf.Lerp(direction.y, _JumpStrength, _Time);
-            return direction;
-        }
-        return direction;
-    }
-
-
     //Calls the Move Function on the Character Controller
     private void Move(Vector3 newPosition)
     {
@@ -83,13 +71,13 @@ public class MoveableObj : Obj
     protected void CalculateMovement()
     {
         Vector3 dir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if(Input.GetKeyDown(_RunKey))
         {
-            Move(ConvertToWorldSpace(ApplyGravity(CalculateJumpHeight(dir) * (_Speed + _SprintSpeed))));
+            Move(ConvertToWorldSpace(ApplyGravity(dir * (_Speed + _SprintSpeed))));
         }
         else
         {
-            Move(ConvertToWorldSpace(ApplyGravity(CalculateJumpHeight(dir) * _Speed)));
+            Move(ConvertToWorldSpace(ApplyGravity(dir * _Speed)));
         }
     }
     //Calculates movement, values are passed through the function
@@ -115,7 +103,7 @@ public class MoveableObj : Obj
     protected void HieghtMaipulation()
     {
         _Time += Time.deltaTime / _CrouchAnimSpeed;
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(_CrouchKey))
         {
             if (_IsCrouched && _CanStand)
             {
