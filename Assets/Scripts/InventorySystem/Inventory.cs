@@ -79,6 +79,11 @@ public class Inventory
             }
         }
 
+        public bool Contains(GameObject g)
+        {
+            return _Objects.Contains(g);
+        }
+
         //Adds a Unity GameObject to a list, takes an extra string for concurrent work loads
         public bool AddObject(GameObject g, string tag)
         {
@@ -248,6 +253,18 @@ public class Inventory
                 _Inventory.TryRemove(i, out _InventoryItem);
             }
         }
+    }
+
+    public bool Contains(GameObject g)
+    {
+        foreach (var item in _Inventory.Values)
+        {
+            if (item.Contains(g))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     //Uses multiple threads to remove an object

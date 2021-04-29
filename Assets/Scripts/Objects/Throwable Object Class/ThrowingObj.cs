@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThrowingObj : MoveableObj
+public class ThrowingObj : GrabableObj
 {
     [Header("Throwing Settings")]
     [Tooltip("Controls factors to do with throwing")]
@@ -23,6 +23,7 @@ public class ThrowingObj : MoveableObj
     // Update is called once per frame
     void Update()
     {
+        //UpdatePosition();
         _ActiveForce = _ActiveForce * _Dampener;
         CalculateMovement(_ActiveForce);
     }
