@@ -20,6 +20,8 @@ public class PlayerInteraction : MonoBehaviour
     private bool m_UseMultithreading;
     [SerializeField]
     private Vector3 m_ThrowForce;
+    [SerializeField]
+    public KeyCode m_KeyPickUpItem = KeyCode.E;
 
     // Start is called before the first frame update
     void Start()
@@ -122,7 +124,7 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(m_KeyPickUpItem))
         {
             if(m_UseMultithreading)
             {
