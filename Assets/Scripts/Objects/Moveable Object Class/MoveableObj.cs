@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Provides basic functions to do with movement and is the base for multiple objects that can move
 /// </summary>
-public class MoveableObj : Object
+public class MoveableObj : Obj
 {
     [Header("Movement Settings")]
     [Tooltip("Controls factors to do with movement")]

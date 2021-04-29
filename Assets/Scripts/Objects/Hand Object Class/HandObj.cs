@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HandObj : Object
+public class HandObj : Obj
 {
     [Header("Component Settings")]
     [Tooltip("Where the dev assigns the components for the hand to interact with")]
@@ -44,9 +44,9 @@ public class HandObj : Object
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (_ObjectInHand.GetComponent<Object>() != null)
+            if (_ObjectInHand.GetComponent<Obj>() != null)
             {
-                switch (_ObjectInHand.GetComponent<Object>().ReturnObjectType())
+                switch (_ObjectInHand.GetComponent<Obj>().ReturnObjectType())
                 {
                     case ObjectType.ThrowingObj:
                         {
@@ -144,9 +144,9 @@ public class HandObj : Object
         {
             Debug.Log("Raycast Hit");
             GameObject g = hit.collider.gameObject;
-            if (g.GetComponent<Object>() != null)
+            if (g.GetComponent<Obj>() != null)
             {
-                switch (g.GetComponent<Object>().ReturnObjectType())
+                switch (g.GetComponent<Obj>().ReturnObjectType())
                 {
                     default:
                         _UI.enabled = false;
