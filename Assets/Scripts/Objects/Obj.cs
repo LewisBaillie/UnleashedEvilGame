@@ -20,7 +20,7 @@ public enum ObjectType
 /// <summary>
 /// Head class for objects that are used in gameplay. Just contains the identifier for the name of the object and its name
 /// </summary>
-public class Object : MonoBehaviour
+public class Obj : MonoBehaviour
 {
     protected ObjectType _objType;
     protected string _type;

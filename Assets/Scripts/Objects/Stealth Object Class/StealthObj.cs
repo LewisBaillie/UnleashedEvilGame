@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StealthObj : Object
+public class StealthObj : Obj
 {
     private GameObject _Border;
 
@@ -37,9 +37,9 @@ public class StealthObj : Object
     void OnTriggerEnter(Collider other)
     {
         GameObject g = other.gameObject;
-        if (g.GetComponent<Object>() != null)
+        if (g.GetComponent<Obj>() != null)
         {
-            switch (g.GetComponent<Object>().ReturnObjectType())
+            switch (g.GetComponent<Obj>().ReturnObjectType())
             {
                 case ObjectType.PlayerObj:
                     {
@@ -54,9 +54,9 @@ public class StealthObj : Object
     void OnTriggerStay(Collider other)
     {
         GameObject g = other.gameObject;
-        if (g.GetComponent<Object>() != null)
+        if (g.GetComponent<Obj>() != null)
         {
-            switch (g.GetComponent<Object>().ReturnObjectType())
+            switch (g.GetComponent<Obj>().ReturnObjectType())
             {
                 case ObjectType.PlayerObj:
                     {
@@ -98,9 +98,9 @@ public class StealthObj : Object
     void OnTriggerExit(Collider other)
     {
         GameObject g = other.gameObject;
-        if (g.GetComponent<Object>() != null)
+        if (g.GetComponent<Obj>() != null)
         {
-           if (g.GetComponent<Object>().ReturnObjectType() == ObjectType.PlayerObj)
+           if (g.GetComponent<Obj>().ReturnObjectType() == ObjectType.PlayerObj)
             {
                 g.GetComponent<PlayerObj>().RestrictStanding(false);
                 foreach (GameObject obj in _Accessories)
