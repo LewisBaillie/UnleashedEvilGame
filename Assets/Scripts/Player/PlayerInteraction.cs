@@ -18,6 +18,8 @@ public class PlayerInteraction : MonoBehaviour
     //Toggles multithreading but causes a unity exception though it still does work
     [SerializeField]
     private bool m_UseMultithreading;
+    [SerializeField]
+    private Vector3 m_ThrowForce;
 
     // Start is called before the first frame update
     void Start()
@@ -105,11 +107,27 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
+        if(Input.GetMouseButtonDown(0))
+        {
+            if(m_Player.GetComponent<Player>().IsStanding() && m_CurrentObject)
+            {
+                SceneObjects CurrentObj = m_CurrentObject.GetComponent<SceneObjects>();
+                CurrentObj.m_IsEquipable = true;
+                CurrentObj.m_IsEquipped = false;
+                m_CurrentObject.GetComponent<Rigidbody>().isKinematic = true;
+                m_CurrentObject.gameObject.transform.parent = null;
+                CurrentObj.AddForce(m_ThrowForce);
+                m_Player.GetComponent<Player>().RemoveObject(m_CurrentObject);
+                m_CurrentObject = null;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             if(m_UseMultithreading)
             {
-                Parallel.ForEach(m_ColliderCache, (item) => {
+                Parallel.ForEach(m_ColliderCache, (item) => 
+                {
                     item.transform.parent = this.gameObject.transform;
                     m_Player.GetComponent<Player>().AddObjectToInvent(item);
                     item.SetActive(false);
@@ -124,6 +142,7 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     goa[i].transform.parent = this.gameObject.transform;
                     m_Player.GetComponent<Player>().AddObjectToInvent(goa[i]);
+                    goa[i].GetComponent<Rigidbody>().isKinematic = true;
                     goa[i].SetActive(false);
                     m_ColliderCache.TryTake(out goa[i]);
                     HideText();
@@ -137,10 +156,10 @@ public class PlayerInteraction : MonoBehaviour
             m_CurrentObject = m_Player.GetComponent<Player>().GrabObjectFromInvent(1);
             if(m_CurrentObject != null)
             {
+                m_CurrentObject.SetActive(true);
                 m_CurrentObject.GetComponent<SceneObjects>().m_IsEquipable = false;
                 m_CurrentObject.GetComponent<SceneObjects>().m_IsEquipped = true;
                 m_CurrentObject.transform.localPosition = new Vector3(0.208f, -0.158f, -0.258f);
-                m_CurrentObject.SetActive(true);
             }
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))

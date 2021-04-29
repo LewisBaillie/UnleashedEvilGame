@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 
     private struct PlayerItem
     {
+        public bool _AddedSucessfully;
         private string _Tag;
         private List<GameObject> _Objects;
         public PlayerItem(GameObject go, string Tag)
@@ -18,29 +19,39 @@ public class Player : MonoBehaviour
             _Objects = new List<GameObject>();
             _Tag = Tag;
             _Objects.Add(go);
+            _AddedSucessfully = false;
         }
         public PlayerItem(GameObject go)
         {
             _Objects = new List<GameObject>();
             _Tag = go.tag;
             _Objects.Add(go);
+            _AddedSucessfully = false;
         }
 
         private bool ObjectIsEigable(GameObject g)
         {
-            if (g.tag == _Tag && !_Objects.Contains(g))
+            if (g.tag == _Tag)
             {
+                _AddedSucessfully = true;
                 return true;
             }
-            else return false;
+            else
+            {
+                return false;
+            }
         }
         private bool ObjectIsEigable(GameObject g, string tag)
         {
-            if (tag == _Tag && !_Objects.Contains(g))
+            if (tag == _Tag)
             {
+                _AddedSucessfully = true;
                 return true;
             }
-            else return false;
+            else
+            {
+                return false;
+            }
         }
 
         //Adds a Unity GameObject to a list
@@ -74,6 +85,10 @@ public class Player : MonoBehaviour
         //Returns the size a group of objects
         public int SizeOfGroup()
         {
+            if(_Objects == null)
+            {
+                return 0;
+            }
             return _Objects.Count;
         }
 
@@ -112,6 +127,12 @@ public class Player : MonoBehaviour
         {
             _Objects.RemoveAt(Pos);
         }
+
+        public void CleanFlag()
+        {
+            _AddedSucessfully = false;
+        }
+
     }
 
     [SerializeField]
@@ -141,6 +162,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         m_Controller = GetComponent<CharacterController>();
+        _CanStand = true;
         NullCheckCharController();
         NullCheckInventory();
     }
@@ -235,11 +257,12 @@ public class Player : MonoBehaviour
         }
         Parallel.ForEach(_Inventory, (item) => { 
             bool result = item.Value.AddObject(go, Tag);
-            if (!result)
+            if (!result && !item.Value._AddedSucessfully)
             {
                 CreateInventorySpace(go, Tag);
             } 
         });
+        Parallel.ForEach(_Inventory, (item) => { item.Value.CleanFlag();});
     }
 
     private void CreateInventorySpace(GameObject go)
@@ -268,7 +291,7 @@ public class Player : MonoBehaviour
         Parallel.For(0, _Inventory.Count, index => {
             PlayerItem _PlayerItem;
             _Inventory.TryGetValue(index, out _PlayerItem);
-            if (_PlayerItem.SizeOfGroup() == 0)
+            if (_PlayerItem.SizeOfGroup() != 0)
             {
                 _Inventory.TryRemove(index, out _PlayerItem);
             };
@@ -295,6 +318,7 @@ public class Player : MonoBehaviour
             _CanStand = true;
         }
     }
+    /*
     public void HeadCollison(bool val, float NewCrouchHeight)
     {
         if (val)
@@ -309,5 +333,6 @@ public class Player : MonoBehaviour
             _CrouchHeight = _CrouchHeightCache;
         }
     }
+    */
 
 }

@@ -16,13 +16,13 @@ public class CrouchCover : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_Parent = gameObject.transform.parent.gameObject;
+        //m_Parent = .transform.parent.gameObject;
         if (m_Parent == null)
         {
             Debug.LogWarning(gameObject.name + " will be destoryed as it couldn't find a parent.");
             Destroy(this);
         }
-        if(m_AutomaticSetUp)
+        if(m_AutomaticSetUp && m_Parent != null)
         {
             gameObject.GetComponent<BoxCollider>().size += new Vector3( 2 / m_Parent.transform.localScale.x, 2 / m_Parent.transform.localScale.y, 2 / m_Parent.transform.localScale.z) / 2;
         }
