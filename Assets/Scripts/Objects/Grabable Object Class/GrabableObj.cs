@@ -2,25 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Base class for objects that can be carried.
+/// </summary>
+
 public class GrabableObj : MoveableObj
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("In Hand Settings")]
+    [Tooltip("Controls factors to do with Objects in the hand")]
+    [SerializeField]
+    protected bool _InHand;
 
-    // Update is called once per frame
-    void Update()
+    //Lets you set if the object is in a hand or not
+    public void IsInHand(bool val)
     {
-        
+        _InHand = val;
     }
-
-    protected void UpdatePosition()
+    //returns if the object is in hand
+    public bool IsInHand()
     {
-        if (transform.parent != null)
-        {
-            transform.position = transform.parent.position;
-        }
+        return _InHand;
     }
 }

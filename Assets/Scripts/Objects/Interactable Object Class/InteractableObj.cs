@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class InteractableObj : Obj
 {
+    [SerializeField]
+    bool _canBePickedUp;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -11,9 +15,9 @@ public class InteractableObj : Obj
         _type = "Cube";
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool CanObjectBePickedUp()
     {
-        
+        return _canBePickedUp;
     }
+
 }

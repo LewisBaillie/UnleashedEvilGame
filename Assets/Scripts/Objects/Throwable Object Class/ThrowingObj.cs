@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class ThrowingObj : GrabableObj
 {
+
     [Header("Throwing Settings")]
     [Tooltip("Controls factors to do with throwing")]
     [SerializeField]
     private float _Dampener;
+    
 
     void Start()
     {
@@ -23,9 +25,11 @@ public class ThrowingObj : GrabableObj
     // Update is called once per frame
     void Update()
     {
-        //UpdatePosition();
-        _ActiveForce = _ActiveForce * _Dampener;
-        CalculateMovement(_ActiveForce);
+        if (!_InHand)
+        {
+            _ActiveForce = _ActiveForce * _Dampener;
+            CalculateMovement(_ActiveForce);
+        }
     }
 
     public void AddForce(Vector3 Force)
