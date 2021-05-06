@@ -27,13 +27,9 @@ public class MoveableObj : Obj
     [SerializeField]
     private Vector3 _positionCache;
     [SerializeField]
-    private float _StandHeight;
-    [SerializeField]
     private float _CrouchHeight;
     [SerializeField]
-    private float _CrouchRadius;
-    [SerializeField]
-    private float _StandRadius;
+    private CapsuleCollider _StandCollider;
     [SerializeField]
     private float _CrouchAnimSpeed;
     [SerializeField]
@@ -51,6 +47,8 @@ public class MoveableObj : Obj
     [Header("Lean Settings")]
     [Tooltip("Controls factors to do with leaning")]
     private Vector3 _Origin;
+    [SerializeField]
+    private float _PeekLength;
     [SerializeField]
     private GameObject _Head;
     [SerializeField]
@@ -87,7 +85,9 @@ public class MoveableObj : Obj
     private void Move(Vector3 newPosition)
     {
         if(_Controller == null)
+        {
             _Controller = GetComponent<CharacterController>();
+        }
         _Controller.Move(newPosition * Time.deltaTime);
     }
 
@@ -100,14 +100,17 @@ public class MoveableObj : Obj
         if (Input.GetKeyDown(_LeanLeftKey))
         {
             _Head.transform.localEulerAngles = new Vector3(_Origin.x, _Origin.y, Mathf.Lerp(_Head.transform.localEulerAngles.z, _LeanLeft.z, _Time));
+            _Head.transform.localPosition = new Vector3(Mathf.Lerp(_Head.transform.localPosition.x, -_PeekLength, _Time),_Head.transform.localPosition.y, _Head.transform.localPosition.z);
         }
         else if (Input.GetKeyDown(_LeanRightKey))
         {
             _Head.transform.localEulerAngles = new Vector3(_Origin.x, _Origin.y, Mathf.Lerp(_Head.transform.localEulerAngles.z, _LeanRight.z, _Time));
+            _Head.transform.localPosition = new Vector3(Mathf.Lerp(_Head.transform.localPosition.x, _PeekLength, _Time), _Head.transform.localPosition.y, _Head.transform.localPosition.z);
         }
         else if(Input.GetKeyUp(_LeanLeftKey) || Input.GetKeyUp(_LeanRightKey))
         {
             _Head.transform.localEulerAngles = new Vector3(Mathf.Lerp(_Head.transform.localEulerAngles.x, _Origin.x, _Time), Mathf.Lerp(_Head.transform.localEulerAngles.z, _Origin.z, _Time), Mathf.Lerp(_Head.transform.localEulerAngles.z, _Origin.z, _Time));
+            _Head.transform.localPosition = new Vector3(Mathf.Lerp(_Head.transform.localPosition.x, 0, _Time), _Head.transform.localPosition.y, _Head.transform.localPosition.z);
         }
 
     }
@@ -136,19 +139,12 @@ public class MoveableObj : Obj
     {
         if (_IsCrouched)
         {
-            transform.localScale = new Vector3(transform.localScale.x, Mathf.Lerp(transform.localScale.y, _CrouchHeight, _Time), transform.localScale.z);
-        }
+            _StandCollider.enabled = false;
+            _Head.transform.localPosition = new Vector3(_Head.transform.localPosition.x, _Head.transform.localPosition.y - _CrouchHeight, _Head.transform.localPosition.z);
         else
         {
-            transform.localScale = new Vector3(transform.localScale.x, Mathf.Lerp(transform.localScale.y, _StandHeight, _Time), transform.localScale.z);
-            _Controller.height = _CrouchHeight;
-            _Controller.radius = 0.15f;
-        }
-        else
-        {
-            //_Controller.transform.position = new Vector3(_Controller.transform.position.x, -24.86f, _Controller.transform.position.z);
-            _Controller.height = _StandHeight;
-            _Controller.radius = 0.5f;
+            _StandCollider.enabled = true;
+            _Head.transform.localPosition = new Vector3(_Head.transform.localPosition.x, _Head.transform.localPosition.y + _CrouchHeight, _Head.transform.localPosition.z);
         }
     }
 
