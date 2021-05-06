@@ -47,7 +47,7 @@ public class HandObj : Obj
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (_ObjectInHand.GetComponent<Obj>() != null || _ObjectInHand != null)
+            if(_ObjectInHand != null)
             {
                 switch (_ObjectInHand.GetComponent<Obj>().ReturnObjectType())
                 {
@@ -60,9 +60,31 @@ public class HandObj : Obj
                             _ObjectInHand = null;
                             break;
                         }
+                    case ObjectType.TorchObj:
+                        {
+                            _ObjectInHand.GetComponent<TorchObj>().ItemAction();
+                            break;
+                        }
                 }
 
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (_ObjectInHand != null)
+            {
+                if (_ObjectInHand.GetComponent<InteractableObj>() != null)
+                {
+                    switch (_ObjectInHand.GetComponent<Obj>().ReturnType())
+                    {
+                        default:
+                            break;
+                    }
+
+                    _ObjectInHand.GetComponent<TorchObj>().ItemAction();
+                }
+            }
+
         }
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
@@ -70,9 +92,7 @@ public class HandObj : Obj
             if (_ObjectInHand != null)
             {
                 _ObjectInHand.SetActive(true);
-                _ObjectInHand.transform.parent = this.transform;
                 _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-                _ObjectInHand.transform.localPosition = _HandPosition;
             }
 
         }
@@ -82,9 +102,7 @@ public class HandObj : Obj
             if (_ObjectInHand != null)
             {
                 _ObjectInHand.SetActive(true);
-                _ObjectInHand.transform.parent = this.transform;
                 _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-                _ObjectInHand.transform.localPosition = _HandPosition;
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -93,9 +111,7 @@ public class HandObj : Obj
             if (_ObjectInHand != null)
             {
                 _ObjectInHand.SetActive(true);
-                _ObjectInHand.transform.parent = this.transform;
                 _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-                _ObjectInHand.transform.localPosition = _HandPosition;
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -104,9 +120,7 @@ public class HandObj : Obj
             if (_ObjectInHand != null)
             {
                 _ObjectInHand.SetActive(true);
-                _ObjectInHand.transform.parent = this.transform;
                 _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-                _ObjectInHand.transform.localPosition = _HandPosition;
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
@@ -115,9 +129,7 @@ public class HandObj : Obj
             if (_ObjectInHand != null)
             {
                 _ObjectInHand.SetActive(true);
-                _ObjectInHand.transform.parent = this.transform;
                 _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-                _ObjectInHand.transform.localPosition = _HandPosition;
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
@@ -126,9 +138,7 @@ public class HandObj : Obj
             if (_ObjectInHand != null)
             {
                 _ObjectInHand.SetActive(true);
-                _ObjectInHand.transform.parent = this.transform;
                 _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-                _ObjectInHand.transform.localPosition = _HandPosition;
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha6))
@@ -137,9 +147,7 @@ public class HandObj : Obj
             if (_ObjectInHand != null)
             {
                 _ObjectInHand.SetActive(true);
-                _ObjectInHand.transform.parent = this.transform;
                 _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-                _ObjectInHand.transform.localPosition = _HandPosition;
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha7))
@@ -148,9 +156,7 @@ public class HandObj : Obj
             if (_ObjectInHand != null)
             {
                 _ObjectInHand.SetActive(true);
-                _ObjectInHand.transform.parent = this.transform;
                 _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-                _ObjectInHand.transform.localPosition = _HandPosition;
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha8))
@@ -159,9 +165,7 @@ public class HandObj : Obj
             if (_ObjectInHand != null)
             {
                 _ObjectInHand.SetActive(true);
-                _ObjectInHand.transform.parent = this.transform;
                 _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-                _ObjectInHand.transform.localPosition = _HandPosition;
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha9))
@@ -172,7 +176,6 @@ public class HandObj : Obj
                 _ObjectInHand.SetActive(true);
                 _ObjectInHand.transform.parent = this.transform;
                 _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-                _ObjectInHand.transform.localPosition = _HandPosition;
             }
         }
     }
@@ -189,8 +192,8 @@ public class HandObj : Obj
         RaycastHit hit;
         if (Physics.Raycast(r, out hit, _ArmLength, layerMask))
         {
-            Debug.Log("Raycast Hit");
             GameObject g = hit.collider.gameObject;
+            Debug.Log("Raycast Hit: " + g.name);
             if (g.GetComponent<Obj>() != null)
             {
                 if (!_Player.ReturnInventory().Contains(g))
@@ -198,6 +201,7 @@ public class HandObj : Obj
                     switch (g.GetComponent<Obj>().ReturnObjectType())
                     {
                         default:
+
                             _UI.enabled = false;
                             break;
                         case 0:
@@ -205,16 +209,26 @@ public class HandObj : Obj
                                 _UI.enabled = false;
                                 break;
                             }
-                        case ObjectType.InteractableObj:
+                        case ObjectType.TorchObj:
                             {
-
                                 _UI.enabled = true;
                                 _UI.text = "Pick Up " + g.name;
-                                if (Input.GetKeyDown(_PickUpKey))
+                                if (Input.GetKeyDown(_PickUpKey) && g.GetComponent<InteractableObj>().CanObjectBePickedUp())
                                 {
-                                    g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
-                                    _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
-                                    g.SetActive(false);
+                                    if (_ObjectInHand == null)
+                                    {
+                                        g.transform.parent = this.transform;
+                                        _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
+                                        g.transform.parent = this.transform;
+                                        g.transform.localPosition = _HandPosition;
+                                        _ObjectInHand = g;
+                                    }
+                                    else
+                                    {
+                                        g.transform.parent = this.transform;
+                                        _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
+                                        g.SetActive(false);
+                                    }
                                 }
                                 break;
                             }
@@ -224,9 +238,23 @@ public class HandObj : Obj
                                 _UI.text = "Pick Up " + g.name;
                                 if (Input.GetKeyDown(_PickUpKey))
                                 {
-                                    g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
-                                    _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
-                                    g.SetActive(false);
+                                    if(_ObjectInHand == null)
+                                    {
+                                        g.transform.parent = this.transform;
+                                        g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
+                                        _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
+                                        g.GetComponent<ThrowingObj>().IsInHand(true);
+                                        g.transform.parent = this.transform;
+                                        g.transform.localPosition = _HandPosition;
+                                        g.GetComponent<MoveableObj>().SetGravity(false);
+                                    }
+                                    else
+                                    {
+                                        g.transform.parent = this.transform;
+                                        g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
+                                        _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
+                                        g.SetActive(false);
+                                    }
                                 }
                                 break;
                             }
@@ -244,4 +272,12 @@ public class HandObj : Obj
             }
         }    
     }
+
+
+    private void ProcessInput()
+    { 
+    
+    
+    }
+
 }
