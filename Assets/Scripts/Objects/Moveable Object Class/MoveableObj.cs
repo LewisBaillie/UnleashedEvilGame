@@ -141,6 +141,7 @@ public class MoveableObj : Obj
         {
             _StandCollider.enabled = false;
             _Head.transform.localPosition = new Vector3(_Head.transform.localPosition.x, _Head.transform.localPosition.y - _CrouchHeight, _Head.transform.localPosition.z);
+        }
         else
         {
             _StandCollider.enabled = true;

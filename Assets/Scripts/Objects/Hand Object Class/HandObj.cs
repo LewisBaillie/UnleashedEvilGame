@@ -71,23 +71,6 @@ public class HandObj : Obj
 
             }
         }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            if (_ObjectInHand != null)
-            {
-                if (_ObjectInHand.GetComponent<InteractableObj>() != null)
-                {
-                    switch (_ObjectInHand.GetComponent<Obj>().ReturnType())
-                    {
-                        default:
-                            break;
-                    }
-
-                    _ObjectInHand.GetComponent<TorchObj>().ItemAction();
-                }
-            }
-
-        }
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             HandleInventoryCall(0);
@@ -133,12 +116,11 @@ public class HandObj : Obj
     //This function handles objects that are in reach of the object this is attached to and allows that object to pick up other objects
     private void HandleGrabingObject()
     {
-        Input.mousePosition.Set(0, 0, 0);
         int layerMask = 1 << 8;
         layerMask = ~layerMask;
 
         //https://docs.unity3d.com/ScriptReference/Physics.Raycast.html
-        Ray r = _RayOutput.ScreenPointToRay(Input.mousePosition); //This needs fixing as it isn't always centred
+        Ray r = _RayOutput.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(r, out hit, _ArmLength, layerMask))
         {
@@ -164,10 +146,6 @@ public class HandObj : Obj
                                 _UI.text = "Pick Up " + g.name;
                                 if (Input.GetKeyDown(_PickUpKey) && g.GetComponent<InteractableObj>().CanObjectBePickedUp())
                                 {
-
-                                    g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
-                                    _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
-                                    g.SetActive(false);
                                     if (_ObjectInHand == null)
                                     {
                                         // May not be 0 in the future
