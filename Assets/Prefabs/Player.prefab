@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 6776728173847817354}
   - component: {fileID: 173408942}
   - component: {fileID: 173408943}
-  - component: {fileID: 6117456772513960571}
   - component: {fileID: 158437885782102470}
+  - component: {fileID: 1976457003}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -86,15 +86,14 @@ MonoBehaviour:
   _Speed: 8
   _SprintSpeed: 0
   _positionCache: {x: 0, y: 0, z: 0}
-  _StandHeight: 1.5
-  _CrouchHeight: 0.3
-  _CrouchRadius: 0
-  _StandRadius: 0
+  _CrouchHeight: 1
+  _StandCollider: {fileID: 158437885782102470}
   _CrouchAnimSpeed: 0.1
   _IsCrouched: 0
   _CanStand: 1
   _IsGravActive: 1
   _Gravity: 9.81
+  _PeekLength: 1.5
   _Head: {fileID: 6776728175299442593}
   _LeanRight: {x: 0, y: 0, z: -20}
   _LeanLeft: {x: 0, y: 0, z: 20}
@@ -119,20 +118,6 @@ MonoBehaviour:
   _ThrowStengths: {x: 0, y: 30, z: 4}
   _HandPosition: {x: 0.35, y: 0, z: 0.445}
   _PickUpKey: 114
---- !u!136 &6117456772513960571
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6776728173847817362}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: -0.5, z: 0}
 --- !u!136 &158437885782102470
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -147,6 +132,24 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!143 &1976457003
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6776728173847817362}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 1
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: -0.5, z: 0}
 --- !u!1 &6776728175299442593
 GameObject:
   m_ObjectHideFlags: 0
