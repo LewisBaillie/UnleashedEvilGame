@@ -18,31 +18,31 @@ public class Inventory
     }
 
     /// <summary>
-    /// A container for storing multiple objects in one place. This container also includes functions to help take out and remove objects
+    /// A container for storing multiple objects in one place. This container also includes functions to help take out and remove objects. Was originally based off tags but got moved to object names
     /// </summary>
     public struct InventoryItem
     {
         public bool _AddedSucessfully;
-        private string _Tag;
+        private string _Name;
         private List<GameObject> _Objects;
         public InventoryItem(GameObject go, string Tag)
         {
             _Objects = new List<GameObject>();
-            _Tag = Tag;
+            _Name = Tag;
             _Objects.Add(go);
             _AddedSucessfully = false;
         }
         public InventoryItem(GameObject go)
         {
             _Objects = new List<GameObject>();
-            _Tag = go.tag;
+            _Name = go.name;
             _Objects.Add(go);
             _AddedSucessfully = false;
         }
         //Checks if an object can be added to this items list
         private bool ObjectIsEigable(GameObject g)
         {
-            if (g.tag == _Tag)
+            if (g.name == _Name)
             {
                 _AddedSucessfully = true;
                 return true;
@@ -52,9 +52,9 @@ public class Inventory
                 return false;
             }
         }
-        private bool ObjectIsEigable(GameObject g, string tag)
+        private bool ObjectIsEigable(GameObject g, string name)
         {
-            if (tag == _Tag)
+            if (name == _Name)
             {
                 _AddedSucessfully = true;
                 return true;
@@ -172,17 +172,19 @@ public class Inventory
     //adds an object to an already existing pool of objects, if no pool exists then it creates a new pool
     public void AddObjectToInvent(GameObject go)
     {
-        string Tag = go.tag;
+        string name = go.name;
         if (_Inventory.Count == 0)
         {
             CreateInventorySpace(go);
+            return;
         }
         foreach (var item in _Inventory)
         {
-            bool result = item.Value.AddObject(go, Tag);
+            bool result = item.Value.AddObject(go, name);
             if (!result && !item.Value._AddedSucessfully)
             {
-                CreateInventorySpace(go, Tag);
+                CreateInventorySpace(go);
+                return;
             }
         }
         foreach (var item in _Inventory)
@@ -194,16 +196,16 @@ public class Inventory
     //Uses multiple threads to add an object to an already existing pool of objects, if no pool exists then it creates a new pool
     public void AysncAddObjectToInvent(GameObject go)
     {
-        string Tag = go.tag;
+        string name = go.name;
         if (_Inventory.Count == 0)
         {
             CreateInventorySpace(go);
         }
         Parallel.ForEach(_Inventory, (item) => {
-            bool result = item.Value.AddObject(go, Tag);
+            bool result = item.Value.AddObject(go, name);
             if (!result && !item.Value._AddedSucessfully)
             {
-                CreateInventorySpace(go, Tag);
+                CreateInventorySpace(go, name);
             }
         });
         Parallel.ForEach(_Inventory, (item) => { item.Value.CleanFlag(); });

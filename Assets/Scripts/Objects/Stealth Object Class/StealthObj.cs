@@ -6,6 +6,9 @@ public class StealthObj : Obj
 {
     private GameObject _Border;
 
+
+    [SerializeField]
+    private GameObject _NonParent;
     [SerializeField]
     private List<GameObject> _Accessories;
 
@@ -13,7 +16,7 @@ public class StealthObj : Obj
     void Start()
     {
         SetObjectType(ObjectType.StealthObj);
-        if(transform.parent == null)
+        if(transform.parent == null || _NonParent == transform.parent.gameObject)
         {
             _Border = new GameObject(this.name + " border");
             _Border.transform.position = this.transform.position;
@@ -23,6 +26,10 @@ public class StealthObj : Obj
             _Border.GetComponent<BoxCollider>().isTrigger = true;
             _Border.GetComponent<StealthObj>().SetUpBorder();
             _Border.GetComponent<StealthObj>()._Accessories.Add(this.transform.gameObject);
+            foreach (GameObject obj in _Accessories)
+            {
+                _Border.GetComponent<StealthObj>()._Accessories.Add(obj);
+            }
             Destroy(this);
         }
     }

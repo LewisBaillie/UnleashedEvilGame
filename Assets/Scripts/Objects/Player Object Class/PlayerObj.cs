@@ -7,6 +7,7 @@ public class PlayerObj : MoveableObj
     private HandObj _Hand;
     private Inventory _Inventory;
 
+
     virtual public void SetUpComponent()
     {
         _objType = ObjectType.PlayerObj;
@@ -23,6 +24,7 @@ public class PlayerObj : MoveableObj
     {
         CalculateMovement();
         HieghtMaipulation();
+        CalculateLean();
     }
 
     public Inventory ReturnInventory()

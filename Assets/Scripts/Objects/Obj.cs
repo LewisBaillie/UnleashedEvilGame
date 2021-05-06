@@ -13,7 +13,8 @@ public enum ObjectType
     HandObj,
     StealthObj,
     InteractableObj,
-    ThrowingObj
+    ThrowingObj,
+    TorchObj,
 
 };
 
@@ -50,6 +51,12 @@ public class Obj : MonoBehaviour
     public string ReturnType()
     {
         return _type;
+    }
+
+    //A common element so that class type for interactional objects doesn't have to be diserned
+    virtual public void ItemAction()
+    {
+        Debug.Log("Action Called");
     }
 
 }
