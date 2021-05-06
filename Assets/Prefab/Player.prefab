@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6776728173847817363}
-  - component: {fileID: 6776728173847817366}
   - component: {fileID: 6776728173847817365}
   - component: {fileID: 6776728173847817364}
   - component: {fileID: 6776728173847817354}
@@ -31,26 +30,16 @@ Transform:
   m_GameObject: {fileID: 6776728173847817362}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+<<<<<<< Updated upstream:Assets/Prefab/Player.prefab
   m_LocalScale: {x: 4, y: 4, z: 4}
+=======
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+>>>>>>> Stashed changes:Assets/Prefabs/Player.prefab
   m_Children:
   - {fileID: 6776728175299442594}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &6776728173847817366
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6776728173847817362}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.3
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &6776728173847817365
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -115,8 +104,14 @@ MonoBehaviour:
   _CrouchKey: 99
   _Speed: 8
   _SprintSpeed: 0
+<<<<<<< Updated upstream:Assets/Prefab/Player.prefab
   _StandHeight: 4
   _CrouchHeight: 1
+=======
+  _positionCache: {x: 0, y: 0, z: 0}
+  _StandHeight: 2
+  _CrouchHeight: 0.08
+>>>>>>> Stashed changes:Assets/Prefabs/Player.prefab
   _CrouchAnimSpeed: 0.1
   _IsCrouched: 0
   _CanStand: 1

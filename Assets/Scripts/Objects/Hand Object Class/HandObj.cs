@@ -33,6 +33,8 @@ public class HandObj : Obj
         _type = "Hand";
         _objType = ObjectType.HandObj;
         _ObjectInHand = null;
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
@@ -212,9 +214,27 @@ public class HandObj : Obj
                                 _UI.text = "Pick Up " + g.name;
                                 if (Input.GetKeyDown(_PickUpKey))
                                 {
+<<<<<<< Updated upstream
                                     g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
                                     _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
                                     g.SetActive(false);
+=======
+                                    if (_ObjectInHand == null)
+                                    {
+                                        // May not be 0 in the future
+                                        _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
+                                        g.transform.parent = this.transform.GetChild(0);
+                                        g.transform.localPosition = _HandPosition;
+                                        _ObjectInHand = g;
+                                        g.transform.rotation = this.transform.GetChild(0).rotation;
+                                    }
+                                    else
+                                    {
+                                        g.transform.parent = this.transform;
+                                        _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
+                                        g.SetActive(false);
+                                    }
+>>>>>>> Stashed changes
                                 }
                                 break;
                             }
