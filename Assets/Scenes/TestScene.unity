@@ -276,8 +276,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 173408942, guid: c13742628ce78c14883beb9c3f08b42a, type: 3}
-      propertyPath: _CrouchHeight
-      value: 0.08
+      propertyPath: _CrouchRadius
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 173408942, guid: c13742628ce78c14883beb9c3f08b42a, type: 3}
+      propertyPath: _StandRadius
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 173408943, guid: c13742628ce78c14883beb9c3f08b42a, type: 3}
       propertyPath: _UI
@@ -694,6 +698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d38713e1b7bfb4fab949917b1dd818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _NonParent: {fileID: 0}
   _Accessories: []
 --- !u!54 &1399197822
 Rigidbody:
@@ -874,6 +879,8 @@ MonoBehaviour:
   _positionCache: {x: 0, y: 0, z: 0}
   _StandHeight: 0
   _CrouchHeight: 0
+  _CrouchRadius: 0
+  _StandRadius: 0
   _CrouchAnimSpeed: 0
   _IsCrouched: 0
   _CanStand: 0

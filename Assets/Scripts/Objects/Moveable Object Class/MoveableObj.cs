@@ -31,6 +31,10 @@ public class MoveableObj : Obj
     [SerializeField]
     private float _CrouchHeight;
     [SerializeField]
+    private float _CrouchRadius;
+    [SerializeField]
+    private float _StandRadius;
+    [SerializeField]
     private float _CrouchAnimSpeed;
     [SerializeField]
     private bool _IsCrouched;
@@ -132,13 +136,13 @@ public class MoveableObj : Obj
     {
         if (_IsCrouched)
         {
-            _positionCache = transform.position;
-            transform.localScale = new Vector3(transform.localScale.x, Mathf.Lerp(transform.localScale.y, _CrouchHeight, _Time), transform.localScale.z);
+            _Controller.height = _CrouchHeight;
+            _Controller.radius = 0.15f;
         }
         else
         {
-            transform.position = new Vector3(transform.position.x, (_positionCache.y + 0.5f), transform.position.z);
-            transform.localScale = new Vector3(transform.localScale.x, Mathf.Lerp(transform.localScale.y, _StandHeight, _Time), transform.localScale.z);
+            _Controller.height = _StandHeight;
+            _Controller.radius = 0.5f;
         }
     }
 
