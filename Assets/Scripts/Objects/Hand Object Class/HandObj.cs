@@ -33,7 +33,7 @@ public class HandObj : Obj
         _type = "Hand";
         _objType = ObjectType.HandObj;
         _ObjectInHand = null;
-        Cursor.SetCursor(null ,Vector2.zero, CursorMode.Auto);
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -164,13 +164,18 @@ public class HandObj : Obj
                                 _UI.text = "Pick Up " + g.name;
                                 if (Input.GetKeyDown(_PickUpKey) && g.GetComponent<InteractableObj>().CanObjectBePickedUp())
                                 {
+
+                                    g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
+                                    _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
+                                    g.SetActive(false);
                                     if (_ObjectInHand == null)
                                     {
-                                        g.transform.parent = this.transform;
+                                        // May not be 0 in the future
                                         _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
-                                        g.transform.parent = this.transform;
+                                        g.transform.parent = this.transform.GetChild(0);
                                         g.transform.localPosition = _HandPosition;
                                         _ObjectInHand = g;
+                                        g.transform.rotation = this.transform.GetChild(0).rotation;
                                     }
                                     else
                                     {
