@@ -33,6 +33,8 @@ public class HandObj : Obj
         _type = "Hand";
         _objType = ObjectType.HandObj;
         _ObjectInHand = null;
+        Cursor.SetCursor(null ,Vector2.zero, CursorMode.Auto);
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
@@ -88,95 +90,43 @@ public class HandObj : Obj
         }
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(0);
-            if (_ObjectInHand != null)
-            {
-                _ObjectInHand.SetActive(true);
-                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-            }
-
+            HandleInventoryCall(0);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(1);
-            if (_ObjectInHand != null)
-            {
-                _ObjectInHand.SetActive(true);
-                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-            }
+            HandleInventoryCall(1);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(2);
-            if (_ObjectInHand != null)
-            {
-                _ObjectInHand.SetActive(true);
-                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-            }
+            HandleInventoryCall(2);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(3);
-            if (_ObjectInHand != null)
-            {
-                _ObjectInHand.SetActive(true);
-                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-            }
+            HandleInventoryCall(3);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(4);
-            if (_ObjectInHand != null)
-            {
-                _ObjectInHand.SetActive(true);
-                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-            }
+            HandleInventoryCall(4);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(5);
-            if (_ObjectInHand != null)
-            {
-                _ObjectInHand.SetActive(true);
-                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-            }
+            HandleInventoryCall(5);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(6);
-            if (_ObjectInHand != null)
-            {
-                _ObjectInHand.SetActive(true);
-                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-            }
+            HandleInventoryCall(6);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(7);
-            if (_ObjectInHand != null)
-            {
-                _ObjectInHand.SetActive(true);
-                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-            }
+            HandleInventoryCall(7);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(8);
-            if (_ObjectInHand != null)
-            {
-                _ObjectInHand.SetActive(true);
-                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-            }
+            HandleInventoryCall(8);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(9);
-            if (_ObjectInHand != null)
-            { 
-                _ObjectInHand.SetActive(true);
-                _ObjectInHand.transform.parent = this.transform;
-                _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
-            }
+            HandleInventoryCall(9);
         }
     }
 
@@ -193,7 +143,6 @@ public class HandObj : Obj
         if (Physics.Raycast(r, out hit, _ArmLength, layerMask))
         {
             GameObject g = hit.collider.gameObject;
-            Debug.Log("Raycast Hit: " + g.name);
             if (g.GetComponent<Obj>() != null)
             {
                 if (!_Player.ReturnInventory().Contains(g))
@@ -251,6 +200,7 @@ public class HandObj : Obj
                                     else
                                     {
                                         g.transform.parent = this.transform;
+                                        g.transform.localPosition = _HandPosition;
                                         g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
                                         _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
                                         g.SetActive(false);
@@ -273,11 +223,36 @@ public class HandObj : Obj
         }    
     }
 
+    private void HandleInventoryCall(int pos)
+    {
+        if (_ObjectInHand != null)
+        {
+            _ObjectInHand.SetActive(false);
+        }
+        _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(pos);
+        if(_ObjectInHand != null)
+        {
+            _ObjectInHand.SetActive(true);
+            switch (_ObjectInHand.GetComponent<Obj>().ReturnObjectType())
+            {
+                default:
+                    break;
+                case ObjectType.TorchObj:
+                    {
 
-    private void ProcessInput()
-    { 
-    
-    
+                        break;
+                    }
+                case ObjectType.ThrowingObj:
+                    {
+                        _ObjectInHand.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
+                        _ObjectInHand.GetComponent<ThrowingObj>().IsInHand(true);
+                        _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
+                        break;
+                    }
+            }
+        }
+
+
     }
 
 }
