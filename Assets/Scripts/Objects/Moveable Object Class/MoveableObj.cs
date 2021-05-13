@@ -211,10 +211,4 @@ public class MoveableObj : Obj
             _CanStand = true;
         }
     }
-
-    void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Collider Added to " + other.name);
-    }
-
 }

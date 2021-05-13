@@ -71,6 +71,10 @@ public class StealthObj : Obj
                         {
                             foreach (GameObject obj in _Accessories)
                             {
+                                if(obj != null)
+                                {
+                                    _Accessories.Remove(obj);
+                                }
                                 if (obj.GetComponent<BoxCollider>())
                                 {
                                     obj.GetComponent<BoxCollider>().enabled = true;
@@ -79,12 +83,20 @@ public class StealthObj : Obj
                                 {
                                     obj.GetComponent<SphereCollider>().enabled = true;
                                 }
+                                if (obj.GetComponent<Rigidbody>())
+                                {
+                                    obj.GetComponent<Rigidbody>().useGravity = true;
+                                }
                             }
                         }
                         else
                         {
                             foreach (GameObject obj in _Accessories)
                             {
+                                if (obj.GetComponent<Rigidbody>())
+                                {
+                                    obj.GetComponent<Rigidbody>().useGravity = false;
+                                }
                                 if (obj.GetComponent<BoxCollider>())
                                 {
                                     obj.GetComponent<BoxCollider>().enabled = false;
@@ -119,6 +131,10 @@ public class StealthObj : Obj
                     if (obj.GetComponent<SphereCollider>())
                     {
                         obj.GetComponent<SphereCollider>().enabled = true;
+                    }
+                    if (obj.GetComponent<Rigidbody>())
+                    {
+                        obj.GetComponent<Rigidbody>().useGravity = true;
                     }
                 }
             }
