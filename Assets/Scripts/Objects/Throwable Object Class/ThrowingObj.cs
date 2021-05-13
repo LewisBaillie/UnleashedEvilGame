@@ -9,6 +9,8 @@ public class ThrowingObj : GrabableObj
     [Tooltip("Controls factors to do with throwing")]
     [SerializeField]
     private float _Dampener;
+    [SerializeField]
+    private GameObject _Player;
     
 
     void Start()
