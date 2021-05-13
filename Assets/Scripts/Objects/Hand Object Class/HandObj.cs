@@ -55,8 +55,10 @@ public class HandObj : Obj
                 {
                     case ObjectType.ThrowingObj:
                         {
+                            _ObjectInHand.transform.localRotation = Quaternion.Euler(0, 0, 0);
                             _ObjectInHand.transform.parent = null;
                             _ObjectInHand.GetComponent<MoveableObj>().SetGravity(true);
+                            _ObjectInHand.GetComponent<ThrowingObj>().IsInHand(false);
                             _ObjectInHand.GetComponent<ThrowingObj>().AddForce(_ThrowStengths);
                             _Player.ReturnInventory().RemoveObject(_ObjectInHand);
                             _ObjectInHand = null;
@@ -172,18 +174,19 @@ public class HandObj : Obj
                                 {
                                     if(_ObjectInHand == null)
                                     {
-                                        g.transform.parent = this.transform;
+                                        _ObjectInHand = g;
+                                        g.transform.parent = this.transform.GetChild(0);
                                         g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
                                         _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
                                         g.GetComponent<ThrowingObj>().IsInHand(true);
-                                        g.transform.parent = this.transform;
                                         g.transform.localPosition = _HandPosition;
                                         g.GetComponent<MoveableObj>().SetGravity(false);
+                                        _ObjectInHand.transform.localRotation = Quaternion.Euler(0, 0, 0);
                                     }
                                     else
                                     {
-                                        g.transform.parent = this.transform;
-                                        g.transform.localPosition = _HandPosition;
+                                        g.transform.parent = this.transform.GetChild(0);
+                                        _ObjectInHand.transform.localRotation = Quaternion.Euler(0, 0, 0);
                                         g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
                                         _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
                                         g.SetActive(false);

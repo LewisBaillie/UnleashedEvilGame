@@ -27,6 +27,8 @@ public class MoveableObj : Obj
     [SerializeField]
     private Vector3 _positionCache;
     [SerializeField]
+    private float _Height;
+    [SerializeField]
     private float _CrouchHeight;
     [SerializeField]
     private CapsuleCollider _StandCollider;
@@ -89,6 +91,7 @@ public class MoveableObj : Obj
             _Controller = GetComponent<CharacterController>();
         }
         _Controller.Move(newPosition * Time.deltaTime);
+        //transform.position += newPosition * Time.deltaTime;
     }
 
     //Calculates if the object should be leaning or not
@@ -208,4 +211,10 @@ public class MoveableObj : Obj
             _CanStand = true;
         }
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Collider Added to " + other.name);
+    }
+
 }
