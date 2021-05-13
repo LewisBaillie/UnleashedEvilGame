@@ -5,7 +5,7 @@ using UnityEngine;
 public class InteractableObj : Obj
 {
     [SerializeField]
-    bool _canBePickedUp;
+    private bool _canBePickedUp;
 
 
     // Start is called before the first frame update

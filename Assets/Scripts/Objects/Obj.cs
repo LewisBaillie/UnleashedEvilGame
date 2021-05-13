@@ -15,7 +15,8 @@ public enum ObjectType
     InteractableObj,
     ThrowingObj,
     TorchObj,
-
+    KeyObj,
+    DoorObj,
 };
 
 /// <summary>

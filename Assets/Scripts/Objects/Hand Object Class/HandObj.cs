@@ -191,7 +191,53 @@ public class HandObj : Obj
                                 }
                                 break;
                             }
-
+                        case ObjectType.KeyObj:
+                            {
+                                _UI.enabled = true;
+                                _UI.text = "Pick Up " + g.name;
+                                if (Input.GetKeyDown(_PickUpKey) && g.GetComponent<InteractableObj>().CanObjectBePickedUp())
+                                {
+                                    if (_ObjectInHand == null)
+                                    {
+                                        // May not be 0 in the future
+                                        _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
+                                        g.transform.parent = this.transform.GetChild(0);
+                                        g.transform.localPosition = _HandPosition;
+                                        _ObjectInHand = g;
+                                        g.transform.rotation = this.transform.GetChild(0).rotation;
+                                    }
+                                    else
+                                    {
+                                        g.transform.parent = this.transform;
+                                        _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
+                                        g.SetActive(false);
+                                    }
+                                }
+                                break;
+                            }
+                        case ObjectType.DoorObj:
+                            {
+                                if (_ObjectInHand != null)
+                                {
+                                    if(_ObjectInHand.GetComponent<Obj>().ReturnObjectType() == ObjectType.KeyObj)
+                                    {
+                                        string keyName = _ObjectInHand.GetComponent<KeyObj>().GetName();
+                                        if (g.GetComponent<DoorObj>().IsDoorUnlockable(keyName))
+                                        {
+                                            _UI.enabled = true;
+                                            _UI.text = "Unlock " + keyName + " Door";
+                                            if (Input.GetKeyDown(_PickUpKey))
+                                            {
+                                                _Player.ReturnInventory().RemoveObject(_ObjectInHand);
+                                                Destroy(_ObjectInHand);
+                                                _ObjectInHand = null;
+                                                g.SetActive(false);
+                                            }
+                                        }
+                                    }  
+                                }
+                                break;
+                            }
                     }
                 }
                 else
@@ -219,12 +265,15 @@ public class HandObj : Obj
             switch (_ObjectInHand.GetComponent<Obj>().ReturnObjectType())
             {
                 default:
+                    _ObjectInHand.transform.parent = this.transform.GetChild(0);
+                    _ObjectInHand.transform.localPosition = _HandPosition;
+                    _ObjectInHand.transform.rotation = this.transform.GetChild(0).rotation;
                     break;
-                case ObjectType.TorchObj:
+                /*case ObjectType.TorchObj:
                     {
-
+                        
                         break;
-                    }
+                    }*/
                 case ObjectType.ThrowingObj:
                     {
                         _ObjectInHand.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
