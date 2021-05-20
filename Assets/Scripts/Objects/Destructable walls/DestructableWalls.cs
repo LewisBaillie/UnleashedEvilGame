@@ -24,4 +24,9 @@ public class DestructableWalls : InteractableObj
             ActivateDestruction(Vector3.left * 3);
         }
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+
+    }
 }
