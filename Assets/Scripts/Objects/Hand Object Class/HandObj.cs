@@ -179,7 +179,6 @@ public class HandObj : Obj
                             }
                         case ObjectType.ThrowingObj:
                             {
-
                                 _UI.enabled = true;
                                 _UI.text = "Pick Up " + g.name;
                                 if (Input.GetKeyDown(_PickUpKey))
@@ -205,17 +204,22 @@ public class HandObj : Obj
                             {
                                 _UI.enabled = true;
                                 _UI.text = "Pick Up " + g.name;
-                                if (Input.GetKeyDown(_PickUpKey) && g.GetComponent<InteractableObj>().CanObjectBePickedUp())
+                                if (Input.GetKeyDown(_PickUpKey))
                                 {
-                                    _UI.enabled = true;
-                                    _UI.text = "Pick Up " + g.name;
-                                    if (Input.GetKeyDown(_PickUpKey))
+                                    foreach (GameObject item in _AllObjects)
                                     {
-                                        _AllObjects.Add(g);
-                                        _ObjectInHand = g;
-                                        g.SetActive(false);
+                                        if (item.name == "Key")
+                                        {
+                                            Destroy(g);
+                                            item.SetActive(true);
+                                            _ObjectInHand = item;
+                                            _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(item);
+                                        }
+                                        else
+                                        {
+                                            item.SetActive(false);
+                                        }
                                     }
-                                    break;
                                 }
                                 break;
                             }
@@ -223,7 +227,7 @@ public class HandObj : Obj
                             {
                                 if (_ObjectInHand != null && _ObjectInHand.GetComponent<Obj>().ReturnObjectType() == ObjectType.KeyObj)
                                 {
-                                    string keyName = _ObjectInHand.GetComponent<KeyObj>().GetName();
+                                    string keyName = _Player.ReturnInventory().GetCurrentObject().GetComponent<KeyObj>().GetName();  //_ObjectInHand.GetComponent<KeyObj>().GetName();
                                     if (g.GetComponent<DoorObj>().IsDoorUnlockable(keyName))
                                     {
                                         _UI.enabled = true;
@@ -270,7 +274,8 @@ public class HandObj : Obj
             _ObjectInHand.SetActive(false);
         }
         _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(pos);
-        if(_ObjectInHand != null)
+        _Player.ReturnInventory().SetInventoryPlace(pos);
+        if (_ObjectInHand != null)
         {
             _ObjectInHand.SetActive(true);
             switch (_ObjectInHand.GetComponent<Obj>().ReturnObjectType())
@@ -284,8 +289,6 @@ public class HandObj : Obj
                     }
             }
         }
-
-
     }
 
     private void HandleHotbar()
