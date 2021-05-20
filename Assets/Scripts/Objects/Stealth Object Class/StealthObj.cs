@@ -5,8 +5,6 @@ using UnityEngine;
 public class StealthObj : Obj
 {
     private GameObject _Border;
-
-
     [SerializeField]
     private GameObject _NonParent;
     [SerializeField]
@@ -33,7 +31,6 @@ public class StealthObj : Obj
             Destroy(this);
         }
     }
-
     //Sets the size of a box collider surrounding the object
     private void SetUpBorder()
     {
