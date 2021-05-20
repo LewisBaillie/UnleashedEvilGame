@@ -6,8 +6,9 @@ using UnityEngine.AI;
 
 public class AIFunctions : MonoBehaviour
 {
-    //Wander AI 
-   public void AIWander(NavMeshAgent agent)
+//-----------------------------START----------------------------------------
+    //Start Wander AI 
+   public void AIStartWander(NavMeshAgent agent)
     {
         Vector3 position = GetRandomPoint(agent, 25f);
         agent.destination = position;
@@ -24,9 +25,46 @@ public class AIFunctions : MonoBehaviour
         Vector3 finalPosition = hit.position;
         return finalPosition;
     }
-    
-    public void AIChase(NavMeshAgent agent, Transform target)
+    //Start Chase AI Not Necessary
+
+    //Start Search AI
+
+
+//----------------------------UPDATE----------------------------------------
+    //Update Wander AI
+    public void AIUpdateWander(NavMeshAgent agent, float timeLeft, string state)
+    {
+        timeLeft -= Time.deltaTime;
+        if (timeLeft <= 0.0f && state == "wander")
+        {
+            agent.GetComponent<AIFunctions>().AIStartWander(agent);
+            timeLeft = 6.0f;
+        }
+    }
+    //Update Chase AI
+    public void AIUpdateChase(NavMeshAgent agent, Transform target)
     {
         agent.destination = target.position;
     }
+
+    //Update Search AI
+
+
+    //--------------------------State Control & Misc.--------------------------------------------
+    //Spot player
+    public void AISpotPlayer(NavMeshAgent agent, Transform target, string state)
+    {
+        //if AI spots player in cone of vision
+        state = "chase";
+    }
+    //Lost player
+    public void AILostPlayer(NavMeshAgent agent, Transform target, string state)
+    {
+        //if AI loses player
+        state = "search"; //In bounding sphere around current position
+    }
+
 }
+
+
+
