@@ -12,8 +12,6 @@ public class HandObj : Obj
     [SerializeField]
     private Text _UI;
     [SerializeField]
-    private Text _Hotbar;
-    [SerializeField]
     private Camera _RayOutput;
 
     [Header("Hand Settings")]
@@ -27,6 +25,13 @@ public class HandObj : Obj
     private Vector3 _HandPosition;
     [SerializeField]
     private KeyCode _PickUpKey;
+    [SerializeField]
+    private GameObject _RockPrefab;
+    [SerializeField]
+    private GameObject _TorchPrefab;                                                                                                
+
+    [SerializeField]
+    private List<GameObject> _AllObjects;
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +42,6 @@ public class HandObj : Obj
         _ObjectInHand = null;
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         Cursor.lockState = CursorLockMode.Locked;
-        _Hotbar.enabled = true;
     }
 
     // Update is called once per frame
@@ -45,7 +49,6 @@ public class HandObj : Obj
     {
         HandleGrabingObject();
         HandleHoldingObjects();
-        HandleHotbar();
     }
 
     //This function controls what objects the user is handling and this current time.
@@ -59,10 +62,11 @@ public class HandObj : Obj
                 {
                     case ObjectType.ThrowingObj:
                         {
-                            _ObjectInHand.transform.localRotation = Quaternion.Euler(0, 0, 0);
+
+                            _ObjectInHand = Instantiate(_RockPrefab, this.transform.GetChild(0));
+                            _ObjectInHand.transform.localRotation = this.transform.GetChild(0).rotation;
                             _ObjectInHand.transform.parent = null;
-                            _ObjectInHand.GetComponent<MoveableObj>().SetGravity(true);
-                            _ObjectInHand.GetComponent<ThrowingObj>().IsInHand(false);
+                            _ObjectInHand.GetComponent<Rigidbody>().isKinematic = false;
                             _ObjectInHand.GetComponent<ThrowingObj>().AddForce(_ThrowStengths);
                             _Player.ReturnInventory().RemoveObject(_ObjectInHand);
                             _ObjectInHand = null;
@@ -77,43 +81,43 @@ public class HandObj : Obj
 
             }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             HandleInventoryCall(0);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             HandleInventoryCall(1);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             HandleInventoryCall(2);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             HandleInventoryCall(3);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             HandleInventoryCall(4);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             HandleInventoryCall(5);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha7))
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             HandleInventoryCall(6);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha8))
+        else if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             HandleInventoryCall(7);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha9))
+        else if (Input.GetKeyDown(KeyCode.Alpha8))
         {
             HandleInventoryCall(8);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha0))
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
         {
             HandleInventoryCall(9);
         }
@@ -138,91 +142,110 @@ public class HandObj : Obj
                     switch (g.GetComponent<Obj>().ReturnObjectType())
                     {
                         default:
+
+                            _UI.enabled = false;
+                            break;
                         case 0:
                             {
                                 _UI.enabled = false;
                                 break;
                             }
-                        case ObjectType.KeyObj:
                         case ObjectType.TorchObj:
                             {
                                 _UI.enabled = true;
                                 _UI.text = "Pick Up " + g.name;
                                 if (Input.GetKeyDown(_PickUpKey) && g.GetComponent<InteractableObj>().CanObjectBePickedUp())
                                 {
-                                    if (_ObjectInHand == null)
+                                    foreach (GameObject item in _AllObjects)
                                     {
-                                        // May not be 0 in the future
-                                        _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
-                                        g.transform.parent = this.transform.GetChild(0);
-                                        g.transform.localPosition = _HandPosition;
-                                        _ObjectInHand = g;
-                                        g.transform.rotation = this.transform.GetChild(0).rotation;
-                                    }
-                                    else
-                                    {
-                                        g.transform.parent = this.transform;
-                                        _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
-                                        g.SetActive(false);
+                                        if (item.name == "Torch")
+                                        {
+                                            Destroy(g);
+                                            item.SetActive(true);
+                                            _ObjectInHand = item;
+                                            _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(item);
+                                        }
+                                        else
+                                        {
+                                            item.SetActive(false);
+                                        }
                                     }
                                 }
                                 break;
                             }
                         case ObjectType.ThrowingObj:
                             {
+
                                 _UI.enabled = true;
                                 _UI.text = "Pick Up " + g.name;
                                 if (Input.GetKeyDown(_PickUpKey))
                                 {
-                                    if(_ObjectInHand == null)
+                                    foreach (GameObject item in _AllObjects)
                                     {
-                                        _ObjectInHand = g;
-                                        g.transform.parent = this.transform.GetChild(0);
-                                        g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
-                                        _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
-                                        g.GetComponent<ThrowingObj>().IsInHand(true);
-                                        g.transform.localPosition = _HandPosition;
-                                        g.GetComponent<MoveableObj>().SetGravity(false);
-                                        _ObjectInHand.transform.localRotation = Quaternion.Euler(0, 0, 0);
+                                        if (item.name == "Rock")
+                                        {
+                                            Destroy(g);
+                                            item.SetActive(true);
+                                            _ObjectInHand = item;
+                                            _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(item);
+                                        }
+                                        else
+                                        {
+                                            item.SetActive(false);
+                                        }
                                     }
-                                    else
+                                }
+                                break;
+                            }
+                        case ObjectType.KeyObj:
+                            {
+                                _UI.enabled = true;
+                                _UI.text = "Pick Up " + g.name;
+                                if (Input.GetKeyDown(_PickUpKey) && g.GetComponent<InteractableObj>().CanObjectBePickedUp())
+                                {
+                                    _UI.enabled = true;
+                                    _UI.text = "Pick Up " + g.name;
+                                    if (Input.GetKeyDown(_PickUpKey))
                                     {
-                                        g.transform.parent = this.transform.GetChild(0);
-                                        _ObjectInHand.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                                        g.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
-                                        _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
-                                        g.SetActive(false);
+                                        foreach (GameObject item in _AllObjects)
+                                        {
+                                            if (item.name == "CoomerKey")
+                                            {
+                                                Destroy(g);
+                                                item.SetActive(true);
+                                                _ObjectInHand = item;
+                                                _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(item);
+                                            }
+                                            else
+                                            {
+                                                item.SetActive(false);
+                                            }
+                                        }
                                     }
+                                    break;
                                 }
                                 break;
                             }
                         case ObjectType.DoorObj:
                             {
-                                if (_ObjectInHand != null && _ObjectInHand.GetComponent<Obj>().ReturnObjectType() == ObjectType.KeyObj)
-                                { 
-                                    string keyName = _ObjectInHand.GetComponent<KeyObj>().GetName();
-                                    if (g.GetComponent<DoorObj>().IsDoorUnlockable(keyName))
-                                    {
-                                        _UI.enabled = true;
-                                        _UI.text = "Unlock " + keyName + " Door";
-                                        if (Input.GetKeyDown(_PickUpKey))
-                                        {
-                                            _Player.ReturnInventory().RemoveObject(_ObjectInHand);
-                                            Destroy(_ObjectInHand);
-                                            _ObjectInHand = null;
-                                            g.SetActive(false);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        _UI.enabled = true;
-                                        _UI.text = "You need the " + g.GetComponent<DoorObj>().GetName() + " key for this door";
-                                    }
-                                }
-                                else
+                                if (_ObjectInHand != null)
                                 {
-                                    _UI.enabled = true;
-                                    _UI.text = "You need the " + g.GetComponent<DoorObj>().GetName() + " key for this door";
+                                    if(_ObjectInHand.GetComponent<Obj>().ReturnObjectType() == ObjectType.KeyObj)
+                                    {
+                                        string keyName = _ObjectInHand.GetComponent<KeyObj>().GetName();
+                                        if (g.GetComponent<DoorObj>().IsDoorUnlockable(keyName))
+                                        {
+                                            _UI.enabled = true;
+                                            _UI.text = "Unlock " + keyName + " Door";
+                                            if (Input.GetKeyDown(_PickUpKey))
+                                            {
+                                                _Player.ReturnInventory().RemoveObject(_ObjectInHand);
+                                                Destroy(_ObjectInHand);
+                                                _ObjectInHand = null;
+                                                g.SetActive(false);
+                                            }
+                                        }
+                                    }  
                                 }
                                 break;
                             }
@@ -253,32 +276,17 @@ public class HandObj : Obj
             switch (_ObjectInHand.GetComponent<Obj>().ReturnObjectType())
             {
                 default:
-                    {
-                        _ObjectInHand.transform.parent = this.transform.GetChild(0);
-                        _ObjectInHand.transform.localPosition = _HandPosition;
-                        _ObjectInHand.transform.rotation = this.transform.GetChild(0).rotation;
-                        break;
-                    }   
+                    break;
                 case ObjectType.ThrowingObj:
                     {
                         _ObjectInHand.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
-                        _ObjectInHand.GetComponent<ThrowingObj>().IsInHand(true);
                         _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
                         break;
                     }
             }
         }
+
+
     }
 
-    private void HandleHotbar()
-    {
-        _Hotbar.text = "";
-        for (int i = 0; i < 10; ++i)
-        {
-            if(_Player.ReturnInventory().GrabObjectFromInvent(i) != null)
-            {
-                _Hotbar.text += (i+1) + ": " + _Player.ReturnInventory().GrabObjectFromInvent(i).name + "    ";
-            }
-        }
-    }
 }
