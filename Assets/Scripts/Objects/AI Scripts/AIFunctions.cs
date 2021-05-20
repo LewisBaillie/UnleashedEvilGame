@@ -32,14 +32,15 @@ public class AIFunctions : MonoBehaviour
 
 //----------------------------UPDATE----------------------------------------
     //Update Wander AI
-    public void AIUpdateWander(NavMeshAgent agent, float timeLeft, string state)
+    public float AIUpdateWander(NavMeshAgent agent, float timeLeft, string state)
     {
         timeLeft -= Time.deltaTime;
-        if (timeLeft <= 0.0f && state == "wander")
+        if (timeLeft <= 0.0f)
         {
             agent.GetComponent<AIFunctions>().AIStartWander(agent);
-            timeLeft = 6.0f;
+            timeLeft = 5.0f;
         }
+        return timeLeft;
     }
     //Update Chase AI
     public void AIUpdateChase(NavMeshAgent agent, Transform target)
