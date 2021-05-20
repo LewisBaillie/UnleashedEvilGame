@@ -291,7 +291,6 @@ public class HandObj : Obj
                 case ObjectType.ThrowingObj:
                     {
                         _ObjectInHand.GetComponent<ThrowingObj>().AddForce(new Vector3(0, 0, 0));
-                        _ObjectInHand.GetComponent<MoveableObj>().SetGravity(false);
                         break;
                     }
             }
