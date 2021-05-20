@@ -28,7 +28,7 @@ public class HandObj : Obj
     [SerializeField]
     private GameObject _RockPrefab;
     [SerializeField]
-    private GameObject _TorchPrefab;                                                                                                   fab;
+    private GameObject _TorchPrefab;                                                                                                
 
     [SerializeField]
     private List<GameObject> _AllObjects;
@@ -62,6 +62,7 @@ public class HandObj : Obj
                 {
                     case ObjectType.ThrowingObj:
                         {
+
                             _ObjectInHand = Instantiate(_RockPrefab, this.transform.GetChild(0));
                             _ObjectInHand.transform.localRotation = this.transform.GetChild(0).rotation;
                             _ObjectInHand.transform.parent = null;
@@ -202,22 +203,26 @@ public class HandObj : Obj
                                 _UI.text = "Pick Up " + g.name;
                                 if (Input.GetKeyDown(_PickUpKey) && g.GetComponent<InteractableObj>().CanObjectBePickedUp())
                                 {
-
-                                    if (_ObjectInHand == null)
+                                    _UI.enabled = true;
+                                    _UI.text = "Pick Up " + g.name;
+                                    if (Input.GetKeyDown(_PickUpKey))
                                     {
-                                        // May not be 0 in the future
-                                        _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
-                                        g.transform.parent = this.transform.GetChild(0);
-                                        g.transform.localPosition = _HandPosition;
-                                        _ObjectInHand = g;
-                                        g.transform.rotation = this.transform.GetChild(0).rotation;
+                                        foreach (GameObject item in _AllObjects)
+                                        {
+                                            if (item.name == "CoomerKey")
+                                            {
+                                                Destroy(g);
+                                                item.SetActive(true);
+                                                _ObjectInHand = item;
+                                                _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(item);
+                                            }
+                                            else
+                                            {
+                                                item.SetActive(false);
+                                            }
+                                        }
                                     }
-                                    else
-                                    {
-                                        g.transform.parent = this.transform;
-                                        _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
-                                        g.SetActive(false);
-                                    }
+                                    break;
                                 }
                                 break;
                             }
@@ -271,9 +276,6 @@ public class HandObj : Obj
             switch (_ObjectInHand.GetComponent<Obj>().ReturnObjectType())
             {
                 default:
-                    _ObjectInHand.transform.parent = this.transform.GetChild(0);
-                    _ObjectInHand.transform.localPosition = _HandPosition;
-                    _ObjectInHand.transform.rotation = this.transform.GetChild(0).rotation;
                     break;
                 case ObjectType.ThrowingObj:
                     {

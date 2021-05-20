@@ -115,11 +115,13 @@ MonoBehaviour:
   _Player: {fileID: 173408942}
   _UI: {fileID: 0}
   _RayOutput: {fileID: 6776728175373570070}
-  _ArmLength: 10
+  _ArmLength: 15
   _ObjectInHand: {fileID: 0}
   _ThrowStengths: {x: 0, y: 10, z: 30}
   _HandPosition: {x: 0.35, y: 0, z: 0.445}
   _PickUpKey: 114
+  _RockPrefab: {fileID: 3199056263789911903}
+  _TorchPrefab: {fileID: 7505232497767278636}
   _AllObjects:
   - {fileID: 7505232497767278636}
   - {fileID: 3199056263789911903}
@@ -509,15 +511,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3199056262060614213, guid: 56e8b7af43a96f44f85f2d911fda6e42, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.72999954
+      value: 0.76
       objectReference: {fileID: 0}
     - target: {fileID: 3199056262060614213, guid: 56e8b7af43a96f44f85f2d911fda6e42, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.7800001
+      value: -0.53
       objectReference: {fileID: 0}
     - target: {fileID: 3199056262060614213, guid: 56e8b7af43a96f44f85f2d911fda6e42, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.51
+      value: 1.96
       objectReference: {fileID: 0}
     - target: {fileID: 3199056262060614213, guid: 56e8b7af43a96f44f85f2d911fda6e42, type: 3}
       propertyPath: m_LocalRotation.x
@@ -550,6 +552,26 @@ PrefabInstance:
     - target: {fileID: 3199056262060614213, guid: 56e8b7af43a96f44f85f2d911fda6e42, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3199056262060614213, guid: 56e8b7af43a96f44f85f2d911fda6e42, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3199056262060614213, guid: 56e8b7af43a96f44f85f2d911fda6e42, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3199056262060614213, guid: 56e8b7af43a96f44f85f2d911fda6e42, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3199056262060614215, guid: 56e8b7af43a96f44f85f2d911fda6e42, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3199056262060614215, guid: 56e8b7af43a96f44f85f2d911fda6e42, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56e8b7af43a96f44f85f2d911fda6e42, type: 3}
