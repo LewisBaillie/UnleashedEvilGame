@@ -211,20 +211,9 @@ public class HandObj : Obj
                                     _UI.text = "Pick Up " + g.name;
                                     if (Input.GetKeyDown(_PickUpKey))
                                     {
-                                        foreach (GameObject item in _AllObjects)
-                                        {
-                                            if (item.name == "CoomerKey")
-                                            {
-                                                Destroy(g);
-                                                item.SetActive(true);
-                                                _ObjectInHand = item;
-                                                _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(item);
-                                            }
-                                            else
-                                            {
-                                                item.SetActive(false);
-                                            }
-                                        }
+                                        _AllObjects.Add(g);
+                                        _ObjectInHand = g;
+                                        g.SetActive(false);
                                     }
                                     break;
                                 }
