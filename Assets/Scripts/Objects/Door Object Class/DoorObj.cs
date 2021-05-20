@@ -14,14 +14,13 @@ public class DoorObj : Obj
         _type = "Door";
     }
 
-    //// Update is called once per frame
-    //void Update()
-    //{
-        
-    //}
-
     public bool IsDoorUnlockable(string keyName)
     {
         return (keyName == _doorName);
+    }
+
+    public string GetName()
+    {
+        return _doorName;
     }
 }
