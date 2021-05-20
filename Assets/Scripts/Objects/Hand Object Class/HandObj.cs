@@ -12,6 +12,8 @@ public class HandObj : Obj
     [SerializeField]
     private Text _UI;
     [SerializeField]
+    private Text _Hotbar;
+    [SerializeField]
     private Camera _RayOutput;
 
     [Header("Hand Settings")]
@@ -42,6 +44,7 @@ public class HandObj : Obj
         _ObjectInHand = null;
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         Cursor.lockState = CursorLockMode.Locked;
+        _Hotbar.enabled = true;
     }
 
     // Update is called once per frame
@@ -49,6 +52,7 @@ public class HandObj : Obj
     {
         HandleGrabingObject();
         HandleHoldingObjects();
+        HandleHotbar();
     }
 
     //This function controls what objects the user is handling and this current time.
@@ -81,43 +85,43 @@ public class HandObj : Obj
 
             }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             HandleInventoryCall(0);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             HandleInventoryCall(1);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             HandleInventoryCall(2);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             HandleInventoryCall(3);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             HandleInventoryCall(4);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             HandleInventoryCall(5);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        else if (Input.GetKeyDown(KeyCode.Alpha7))
         {
             HandleInventoryCall(6);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha7))
+        else if (Input.GetKeyDown(KeyCode.Alpha8))
         {
             HandleInventoryCall(7);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha8))
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
         {
             HandleInventoryCall(8);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha9))
+        else if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             HandleInventoryCall(9);
         }
@@ -228,24 +232,31 @@ public class HandObj : Obj
                             }
                         case ObjectType.DoorObj:
                             {
-                                if (_ObjectInHand != null)
+                                if (_ObjectInHand != null && _ObjectInHand.GetComponent<Obj>().ReturnObjectType() == ObjectType.KeyObj)
                                 {
-                                    if(_ObjectInHand.GetComponent<Obj>().ReturnObjectType() == ObjectType.KeyObj)
+                                    string keyName = _ObjectInHand.GetComponent<KeyObj>().GetName();
+                                    if (g.GetComponent<DoorObj>().IsDoorUnlockable(keyName))
                                     {
-                                        string keyName = _ObjectInHand.GetComponent<KeyObj>().GetName();
-                                        if (g.GetComponent<DoorObj>().IsDoorUnlockable(keyName))
+                                        _UI.enabled = true;
+                                        _UI.text = "Unlock " + keyName + " Door";
+                                        if (Input.GetKeyDown(_PickUpKey))
                                         {
-                                            _UI.enabled = true;
-                                            _UI.text = "Unlock " + keyName + " Door";
-                                            if (Input.GetKeyDown(_PickUpKey))
-                                            {
-                                                _Player.ReturnInventory().RemoveObject(_ObjectInHand);
-                                                Destroy(_ObjectInHand);
-                                                _ObjectInHand = null;
-                                                g.SetActive(false);
-                                            }
+                                            _Player.ReturnInventory().RemoveObject(_ObjectInHand);
+                                            Destroy(_ObjectInHand);
+                                            _ObjectInHand = null;
+                                            g.SetActive(false);
                                         }
-                                    }  
+                                    }
+                                    else
+                                    {
+                                        _UI.enabled = true;
+                                        _UI.text = "You need the " + g.GetComponent<DoorObj>().GetName() + " key for this door";
+                                    }
+                                }
+                                else
+                                {
+                                    _UI.enabled = true;
+                                    _UI.text = "You need the " + g.GetComponent<DoorObj>().GetName() + " key for this door";
                                 }
                                 break;
                             }
@@ -287,6 +298,18 @@ public class HandObj : Obj
         }
 
 
+    }
+
+    private void HandleHotbar()
+    {
+        _Hotbar.text = "";
+        for (int i = 0; i < 10; ++i)
+        {
+            if (_Player.ReturnInventory().GrabObjectFromInvent(i) != null)
+            {
+                _Hotbar.text += (i + 1) + ": " + _Player.ReturnInventory().GrabObjectFromInvent(i).name + "    ";
+            }
+        }
     }
 
 }
