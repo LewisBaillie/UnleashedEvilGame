@@ -24,13 +24,7 @@ public class HandObj : Obj
     [SerializeField]
     private Vector3 _ThrowStengths;
     [SerializeField]
-    private Vector3 _HandPosition;
-    [SerializeField]
-    private KeyCode _PickUpKey;
-    [SerializeField]
-    private GameObject _RockPrefab;
-    [SerializeField]
-    private GameObject _TorchPrefab;                                                                                                
+    private KeyCode _PickUpKey;                                                                                            
 
     [SerializeField]
     private List<GameObject> _AllObjects;
@@ -66,13 +60,20 @@ public class HandObj : Obj
                 {
                     case ObjectType.ThrowingObj:
                         {
-
-                            _ObjectInHand = Instantiate(_RockPrefab, this.transform.GetChild(0));
+                            foreach (GameObject item in _AllObjects)
+                            {
+                                if (item.name == "Rock")
+                                {
+                                    _ObjectInHand = Instantiate(item, this.transform.GetChild(0));
+                                    item.SetActive(false);
+                                    break;
+                                }
+                            }
                             _ObjectInHand.transform.localRotation = this.transform.GetChild(0).rotation;
-                            _ObjectInHand.transform.parent = null;
+                            _ObjectInHand.transform.parent = null;                            
                             _ObjectInHand.GetComponent<Rigidbody>().isKinematic = false;
                             _ObjectInHand.GetComponent<ThrowingObj>().AddForce(_ThrowStengths);
-                            _Player.ReturnInventory().RemoveObject(_ObjectInHand);
+                            _Player.ReturnInventory().RemoveObject(_Player.ReturnInventory().GetCurrentObject()); 
                             _ObjectInHand = null;
                             break;
                         }
@@ -85,43 +86,14 @@ public class HandObj : Obj
 
             }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        for (int i = 0; i < 9; ++i)
         {
-            HandleInventoryCall(0);
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+            {
+                HandleInventoryCall(i);
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            HandleInventoryCall(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            HandleInventoryCall(2);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            HandleInventoryCall(3);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            HandleInventoryCall(4);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            HandleInventoryCall(5);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            HandleInventoryCall(6);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            HandleInventoryCall(7);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            HandleInventoryCall(8);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             HandleInventoryCall(9);
         }
@@ -146,14 +118,8 @@ public class HandObj : Obj
                     switch (g.GetComponent<Obj>().ReturnObjectType())
                     {
                         default:
-
                             _UI.enabled = false;
                             break;
-                        case 0:
-                            {
-                                _UI.enabled = false;
-                                break;
-                            }
                         case ObjectType.TorchObj:
                             {
                                 _UI.enabled = true;
@@ -210,10 +176,10 @@ public class HandObj : Obj
                                     {
                                         if (item.name == "Key")
                                         {
-                                            Destroy(g);
                                             item.SetActive(true);
                                             _ObjectInHand = item;
-                                            _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(item);
+                                            _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
+                                            g.SetActive(false);
                                         }
                                         else
                                         {
@@ -234,8 +200,8 @@ public class HandObj : Obj
                                         _UI.text = "Unlock " + keyName + " Door";
                                         if (Input.GetKeyDown(_PickUpKey))
                                         {
-                                            _Player.ReturnInventory().RemoveObject(_ObjectInHand);
-                                            Destroy(_ObjectInHand);
+                                            _Player.ReturnInventory().RemoveObject(_Player.ReturnInventory().GetCurrentObject());
+                                            _ObjectInHand.SetActive(false);
                                             _ObjectInHand = null;
                                             g.SetActive(false);
                                         }
@@ -273,7 +239,40 @@ public class HandObj : Obj
         {
             _ObjectInHand.SetActive(false);
         }
-        _ObjectInHand = _Player.ReturnInventory().GrabObjectFromInvent(pos);
+        if(_Player.ReturnInventory().GrabObjectFromInvent(pos) != null)
+        {
+            string viewmodelName = "temp";
+            switch (_Player.ReturnInventory().GrabObjectFromInvent(pos).GetComponent<Obj>().ReturnObjectType())
+            {
+                case ObjectType.TorchObj:
+                    {
+                        viewmodelName = "Torch";
+                        break;
+                    }
+                case ObjectType.ThrowingObj:
+                    {
+                        viewmodelName = "Rock";
+                        break;
+                    }
+                case ObjectType.KeyObj:
+                    {
+                        viewmodelName = "Key";
+                        break;
+                    }
+            }
+            foreach (GameObject item in _AllObjects)
+            {
+                if (item.name == viewmodelName)
+                {
+                    _ObjectInHand = item;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            _ObjectInHand = null;
+        }
         _Player.ReturnInventory().SetInventoryPlace(pos);
         if (_ObjectInHand != null)
         {

@@ -12,7 +12,6 @@ public class KeyObj : InteractableObj
     {
         _objType = ObjectType.KeyObj;
         _type = "Key";
-
     }
 
     public string GetName()
@@ -20,9 +19,8 @@ public class KeyObj : InteractableObj
         return _keyName;
     }
 
-    //// Update is called once per frame
-    //void Update()
-    //{
-
-    //}
+    public void SetName(string name)
+    {
+        _keyName = name;
+    }
 }

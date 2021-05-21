@@ -34,6 +34,7 @@ public class Inventory
             if(_Inventory[i] == null)
             {
                 _Inventory[i] = go;
+                _PlaceInInventory = i;
                 break;
             }
         }
