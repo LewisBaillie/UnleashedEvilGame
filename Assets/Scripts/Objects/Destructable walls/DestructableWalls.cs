@@ -1,18 +1,28 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class DestructableWalls : InteractableObj
 {
+    [SerializeField]
+    private int _ForceMagnification;
+    [SerializeField]
+    private GameObject _Rubble;
+    [SerializeField]
+    private Vector3 _OriginPoint;
+    [SerializeField]
+    private int _RubbleAmount;
+
     public void ActivateDestruction(Vector3 AIForce)
     {
-        Rigidbody[] r = GetComponentsInChildren<Rigidbody>();
-        foreach (Rigidbody body in GetComponentsInChildren<Rigidbody>())
+        System.Random r = new System.Random();
+        GameObject Parent = new GameObject(this.name + " Rubble Container");
+        Parent.transform.position = this.transform.position;
+        for (int i = 0; i < _RubbleAmount; i++)
         {
-            body.useGravity = true;
-            body.gameObject.transform.parent = null;
-            body.AddForce(AIForce, ForceMode.VelocityChange);
-            CapsuleCollider c = body.GetComponent<CapsuleCollider>();
-            c.enabled = true;
+            GameObject g = Instantiate(_Rubble, _OriginPoint, Quaternion.identity);
+            g.transform.parent = Parent.transform;
+            g.GetComponent<Rigidbody>().AddForce(AIForce * NextFloat(r), ForceMode.VelocityChange);
         }
         Destroy(gameObject);
     }
@@ -28,5 +38,14 @@ public class DestructableWalls : InteractableObj
     void OnTriggerEnter(Collider other)
     {
 
+    }
+
+    //https://stackoverflow.com/questions/3365337/best-way-to-generate-a-random-float-in-c-sharp
+    private float NextFloat(System.Random random)
+    {
+        double mantissa = (random.NextDouble() * 2.0) - 1.0;
+        // choose -149 instead of -126 to also generate subnormal floats (*)
+        double exponent = Math.Pow(2.0, random.Next(0, _ForceMagnification));
+        return (float)(mantissa * exponent);
     }
 }
