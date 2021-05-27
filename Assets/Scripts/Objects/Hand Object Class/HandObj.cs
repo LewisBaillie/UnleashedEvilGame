@@ -15,6 +15,8 @@ public class HandObj : Obj
     private Text _Hotbar;
     [SerializeField]
     private Camera _RayOutput;
+    [SerializeField]
+    private Sound _SoundSystem;
 
     [Header("Hand Settings")]
     [SerializeField]
@@ -66,6 +68,7 @@ public class HandObj : Obj
                 {
                     case ObjectType.ThrowingObj:
                         {
+                            _SoundSystem.PlaySound(SoundEffect.throwingSound);
 
                             _ObjectInHand = Instantiate(_RockPrefab, this.transform.GetChild(0));
                             _ObjectInHand.transform.localRotation = this.transform.GetChild(0).rotation;
@@ -78,6 +81,8 @@ public class HandObj : Obj
                         }
                     case ObjectType.TorchObj:
                         {
+                            _SoundSystem.PlaySound(SoundEffect.torchSound);
+
                             _ObjectInHand.GetComponent<TorchObj>().ItemAction();
                             break;
                         }
@@ -164,6 +169,8 @@ public class HandObj : Obj
                                     {
                                         if (item.name == "Torch")
                                         {
+                                            _SoundSystem.PlaySound(SoundEffect.pickupSound);
+
                                             Destroy(g);
                                             item.SetActive(true);
                                             _ObjectInHand = item;
@@ -188,6 +195,8 @@ public class HandObj : Obj
                                     {
                                         if (item.name == "Rock")
                                         {
+                                            _SoundSystem.PlaySound(SoundEffect.pickupSound);
+
                                             Destroy(g);
                                             item.SetActive(true);
                                             _ObjectInHand = item;
@@ -211,6 +220,8 @@ public class HandObj : Obj
                                     _UI.text = "Pick Up " + g.name;
                                     if (Input.GetKeyDown(_PickUpKey))
                                     {
+                                        _SoundSystem.PlaySound(SoundEffect.pickupSound);
+
                                         _AllObjects.Add(g);
                                         _ObjectInHand = g;
                                         g.SetActive(false);
@@ -230,6 +241,8 @@ public class HandObj : Obj
                                         _UI.text = "Unlock " + keyName + " Door";
                                         if (Input.GetKeyDown(_PickUpKey))
                                         {
+                                            _SoundSystem.PlaySound(SoundEffect.doorSound);
+
                                             _Player.ReturnInventory().RemoveObject(_ObjectInHand);
                                             Destroy(_ObjectInHand);
                                             _ObjectInHand = null;
