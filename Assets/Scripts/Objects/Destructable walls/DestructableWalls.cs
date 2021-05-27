@@ -12,6 +12,8 @@ public class DestructableWalls : InteractableObj
     private Vector3 _OriginPoint;
     [SerializeField]
     private int _RubbleAmount;
+    [SerializeField]
+    private int _RubbleTimeLimit;
 
     public void ActivateDestruction(Vector3 AIForce)
     {
@@ -23,6 +25,7 @@ public class DestructableWalls : InteractableObj
             GameObject g = Instantiate(_Rubble, _OriginPoint, Quaternion.identity);
             g.transform.parent = Parent.transform;
             g.GetComponent<Rigidbody>().AddForce(AIForce * NextFloat(r), ForceMode.VelocityChange);
+            Destroy(g,_RubbleTimeLimit);
         }
         Destroy(gameObject);
     }
@@ -44,7 +47,6 @@ public class DestructableWalls : InteractableObj
     private float NextFloat(System.Random random)
     {
         double mantissa = (random.NextDouble() * 2.0) - 1.0;
-        // choose -149 instead of -126 to also generate subnormal floats (*)
         double exponent = Math.Pow(2.0, random.Next(0, _ForceMagnification));
         return (float)(mantissa * exponent);
     }
