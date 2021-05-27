@@ -18,10 +18,10 @@ public class Sound : MonoBehaviour
     
     public void PlaySound(SoundEffect soundIndex)
     {
-        GameObject newObj = new GameObject("keyAudio");
+        GameObject newObj = new GameObject("Audio");
         newObj.AddComponent<AudioSource>();
         newObj.GetComponent<AudioSource>().clip = _AllAudioClips[(int)soundIndex - 1];
         newObj.GetComponent<AudioSource>().Play();
-        Destroy(newObj, 3.0f);
+        Destroy(newObj, newObj.GetComponent<AudioSource>().clip.length);
     }
 }

@@ -91,7 +91,6 @@ public class MoveableObj : Obj
             _Controller = GetComponent<CharacterController>();
         }
         _Controller.Move(newPosition * Time.deltaTime);
-        //transform.position += newPosition * Time.deltaTime;
     }
 
     //Calculates if the object should be leaning or not
@@ -158,11 +157,14 @@ public class MoveableObj : Obj
         _Time += Time.deltaTime / _CrouchAnimSpeed;
         if (Input.GetKeyDown(_CrouchKey))
         {
-            if (_IsCrouched && _CanStand)
+            if (_IsCrouched)
             {
-                _IsCrouched = false;
-                CalculateHeight();
-                _Time = 0;
+                if (_CanStand)
+                {
+                    _IsCrouched = false;
+                    CalculateHeight();
+                    _Time = 0;
+                }
             }
             else
             {
