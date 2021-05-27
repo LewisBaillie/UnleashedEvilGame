@@ -38,7 +38,7 @@ public class Inventory
 
     public void AddObjectToInvent(GameObject go)
     {
-        for (int i = 0; i < _Inventory.Length; ++i)
+        for (int i = 0; i < _Inventory.Length; i++)
         {
             if(_Inventory[i] == null)
             {
@@ -77,7 +77,7 @@ public class Inventory
     //Returns a specfied object from the inventory
     public GameObject GrabObjectFromInvent(int Place)
     {
-        _ActivePosition = Place;    
+        //_ActivePosition = Place;    
         return _Inventory[Place];
     }
 
