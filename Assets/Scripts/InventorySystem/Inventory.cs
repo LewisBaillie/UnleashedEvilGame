@@ -27,7 +27,7 @@ public class Inventory
         if (_Inventory == null)
         {
             _Inventory = new GameObject[10];
-            _PlaceInInventory = 0;
+            _ActivePosition = 0;
         }
     }
 
@@ -43,7 +43,7 @@ public class Inventory
             if(_Inventory[i] == null)
             {
                 _Inventory[i] = go;
-                _PlaceInInventory = i;
+                _ActivePosition = i;
                 break;
             }
         }
@@ -83,11 +83,11 @@ public class Inventory
 
     public void SetInventoryPlace(int place)
     {
-        _PlaceInInventory = place;
+        _ActivePosition = place;
     }
 
     public GameObject GetCurrentObject()
     {
-        return _Inventory[_PlaceInInventory];
+        return _Inventory[_ActivePosition];
     }
 }
