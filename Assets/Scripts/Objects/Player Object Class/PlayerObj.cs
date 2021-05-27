@@ -11,11 +11,20 @@ public class PlayerObj : MoveableObj
     private HandObj _Hand;
     private Inventory _Inventory;
 
+    [Header("Save Settings")]
     [SerializeField]
+    private GameObject[] _Doors;
+    [SerializeField]
+    private GameObject[] _Enemies;
+
     struct SaveFile
     {
-        public SaveFile(Transform t, Inventory inventory, bool IsCrouched, int AIP)
+        public SaveFile(Transform t, Inventory inventory, bool IsCrouched, int AIP, GameObject[] Doors, GameObject[] Enemies)
         {
+            DoorsActive = new List<bool>();
+            EnemyPos = new List<Vector3>();
+            EnemyScale = new List<Vector3>();
+            EnemyRot = new List<Quaternion>();
             I = new GameObject[10];
             Pos = t.position;
             Scale = t.localScale;
@@ -23,6 +32,23 @@ public class PlayerObj : MoveableObj
             for (int i = 0; i < I.Length; i++)
             {
                 I[i] = inventory.GrabObjectFromInvent(i);
+            }
+            foreach (GameObject item in Doors)
+            {
+                if (item.activeInHierarchy)
+                {
+                    DoorsActive.Add(true);
+                }
+                else
+                {
+                    DoorsActive.Add(false);
+                }
+            }
+            foreach (GameObject item in Enemies)
+            {
+                EnemyPos.Add(item.transform.position);
+                EnemyScale.Add(item.transform.localScale);
+                EnemyRot.Add(item.transform.rotation);
             }
             Standing = IsCrouched;
             ActiveInventoryPos = AIP;
@@ -33,7 +59,11 @@ public class PlayerObj : MoveableObj
         public GameObject[] I;
         public bool Standing;
         public int ActiveInventoryPos;
-    
+        public List<bool> DoorsActive;
+        public List<Vector3> EnemyPos;
+        public List<Vector3> EnemyScale;
+        public List<Quaternion> EnemyRot;
+        
     }
 
 
@@ -79,7 +109,20 @@ public class PlayerObj : MoveableObj
             transform.position = save.Pos;
             transform.localScale = save.Scale;
             transform.rotation = save.Rotation;
-
+            for (int i = 0; i < save.DoorsActive.Count; i++)
+            {
+                _Doors[i].SetActive(save.DoorsActive[i]);
+            }
+            for (int i = 0; i < save.DoorsActive.Count; i++)
+            {
+                _Doors[i].SetActive(save.DoorsActive[i]);
+            }
+            for (int i = 0; i < save.EnemyPos.Count; i++)
+            {
+                _Enemies[i].transform.position = save.EnemyPos[i];
+                _Enemies[i].transform.localScale = save.EnemyScale[i];
+                _Enemies[i].transform.rotation = save.EnemyRot[i];
+            }
         }
     }
 
@@ -88,7 +131,7 @@ public class PlayerObj : MoveableObj
         if(System.IO.File.Exists(Application.persistentDataPath + "/gamesave.save"))
         {
             System.IO.File.Delete(Application.persistentDataPath + "/gamesave.save");
-            SaveFile save = new SaveFile(transform, _Inventory, IsStanding(), _Inventory.ActivePosition());
+            SaveFile save = new SaveFile(transform, _Inventory, IsStanding(), _Inventory.ActivePosition(), _Doors, _Enemies);
             string json = JsonUtility.ToJson(save);
             System.IO.FileStream file = System.IO.File.Create(Application.persistentDataPath + "/gamesave.save");
             byte[] bytes = Encoding.ASCII.GetBytes(json);
@@ -97,7 +140,7 @@ public class PlayerObj : MoveableObj
         }
         else
         {
-            SaveFile save = new SaveFile(transform, _Inventory, IsStanding(), _Inventory.ActivePosition());
+            SaveFile save = new SaveFile(transform, _Inventory, IsStanding(), _Inventory.ActivePosition(), _Doors, _Enemies);
             string json = JsonUtility.ToJson(save);
             System.IO.FileStream file = System.IO.File.Create(Application.persistentDataPath + "/gamesave.save");
             byte[] bytes = Encoding.ASCII.GetBytes(json);

@@ -143,19 +143,20 @@ public class HandObj : Obj
             GameObject g = hit.collider.gameObject;
             if(g.tag == "The Bean")
             {
-                _UI.enabled = true;
-                _UI.text = "Based";
-                if(_ObjectInHand.GetComponent<TorchObj>())
+                if (_ObjectInHand != null)
                 {
-                    if(DeleteOnNextAction)
+                    if (_ObjectInHand.GetComponent<TorchObj>())
                     {
-                        Destroy(g);
-                    }    
-                    if(_ObjectInHand.GetComponent<TorchObj>().IsTorchOn())
-                    {
-                        DeleteOnNextAction = true;
+                        if (DeleteOnNextAction)
+                        {
+                            Destroy(g);
+                        }
+                        if (_ObjectInHand.GetComponent<TorchObj>().IsTorchOn())
+                        {
+                            DeleteOnNextAction = true;
+                        }
                     }
-                }    
+                }
             }
             if (g.GetComponent<Obj>() != null)
             {
