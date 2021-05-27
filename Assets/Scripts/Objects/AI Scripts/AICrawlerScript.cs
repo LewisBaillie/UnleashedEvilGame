@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class AICrawlerScript : MonoBehaviour
 {
     [SerializeField]
-    public Transform target;
+    private Transform target;
     NavMeshAgent agent;
     string state;
     float timeLeft = 5.0f; //TIME IN SECONDS, starts from 5 & counts down
@@ -16,7 +16,7 @@ public class AICrawlerScript : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        state = "wander";
+        state = "chase";
         agent.GetComponent<AIFunctions>().AIStartWander(agent);
         timeLeft = 6.0f;
     }

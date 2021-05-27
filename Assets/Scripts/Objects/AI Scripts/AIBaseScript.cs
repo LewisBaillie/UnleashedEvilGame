@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class AIBaseScript : MonoBehaviour
 {
     [SerializeField]
-    public Transform target;
+    private Transform target;
     NavMeshAgent agent;
     string state;
     float timeLeft = 5.0f; //TIME IN SECONDS, starts from 5 & counts down
