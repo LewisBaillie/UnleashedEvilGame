@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using UnityEngine;
-
+using System.Runtime.Serialization;
 
 /// <summary>
 /// A basic inventory system that can add and remove objects in a concurrent or linear fashion
 /// </summary>
+/// 
+
+
+[SerializeField]
 public class Inventory
 {
-    GameObject[] _Inventory;
+    private GameObject[] _Inventory;
+    private int _ActivePosition = 0;
 
     public Inventory()
     {
@@ -23,6 +28,11 @@ public class Inventory
         {
             _Inventory = new GameObject[10];
         }
+    }
+
+    public int ActivePosition()
+    {
+        return _ActivePosition;
     }
 
     public void AddObjectToInvent(GameObject go)
@@ -65,6 +75,7 @@ public class Inventory
     //Returns a specfied object from the inventory
     public GameObject GrabObjectFromInvent(int Place)
     {
+        _ActivePosition = Place;    
         return _Inventory[Place];
     }  
 }

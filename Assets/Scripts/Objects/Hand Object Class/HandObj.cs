@@ -35,6 +35,8 @@ public class HandObj : Obj
     [SerializeField]
     private List<GameObject> _AllObjects;
 
+    bool DeleteOnNextAction;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -139,6 +141,22 @@ public class HandObj : Obj
         if (Physics.Raycast(r, out hit, _ArmLength, layerMask))
         {
             GameObject g = hit.collider.gameObject;
+            if(g.tag == "The Bean")
+            {
+                _UI.enabled = true;
+                _UI.text = "Based";
+                if(_ObjectInHand.GetComponent<TorchObj>())
+                {
+                    if(DeleteOnNextAction)
+                    {
+                        Destroy(g);
+                    }    
+                    if(_ObjectInHand.GetComponent<TorchObj>().IsTorchOn())
+                    {
+                        DeleteOnNextAction = true;
+                    }
+                }    
+            }
             if (g.GetComponent<Obj>() != null)
             {
                 if (!_Player.ReturnInventory().Contains(g))

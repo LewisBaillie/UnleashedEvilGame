@@ -27,4 +27,9 @@ public class TorchObj : InteractableObj
         }
     }
 
+    public bool IsTorchOn()
+    {
+        return _Bulb.isActiveAndEnabled;
+    }
+
 }
