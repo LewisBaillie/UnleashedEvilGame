@@ -219,7 +219,7 @@ public class HandObj : Obj
                             {
                                 if (_ObjectInHand != null && _ObjectInHand.GetComponent<Obj>().ReturnObjectType() == ObjectType.KeyObj)
                                 {
-                                    string keyName = _Player.ReturnInventory().GetCurrentObject().GetComponent<KeyObj>().GetName();  //_ObjectInHand.GetComponent<KeyObj>().GetName();
+                                    string keyName = _Player.ReturnInventory().GetCurrentObject().GetComponent<KeyObj>().GetName();
                                     if (g.GetComponent<DoorObj>().IsDoorUnlockable(keyName))
                                     {
                                         _UI.enabled = true;
