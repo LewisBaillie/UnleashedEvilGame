@@ -8,10 +8,6 @@ public class AINavigationManager : MonoBehaviour
     public NavMeshSurface[] surfaces;
     public void regenerateNavmesh(float timer)
     {
-        while (timer > 0)
-        {
-            timer -= Time.deltaTime;
-        }
         for (int i = 0; i < surfaces.Length; i++)
         {
             surfaces[i].BuildNavMesh();
