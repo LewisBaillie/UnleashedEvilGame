@@ -12,75 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcf7219bab7fe46a1ad266029b2fee19, type: 3}
   m_Name: Readme
   m_EditorClassIdentifier: 
-  icon: {fileID: 2800000, guid: 9b84c330de497af4793fd7b376afed13, type: 3}
-  title: High-Definition Render Pipeline
+  icon: {fileID: 2800000, guid: f3b461aa3ce4e164e80610d900c9b22d, type: 3}
+  iconMaxWidth: 192
+  title: SNAPS Prototype Pack
+  titlesub: 
   sections:
-  - heading: 
-    text: This template is a good starting point for projects aiming at <b>High-end
-      Graphics</b> and developed for platforms that support Shader Model 5.0 (DX11
-      and above). This template utilizes the <b>High Definition Render Pipeline (HDRP)</b>,
-      a modern rendering pipeline that includes advanced material types and a configurable
-      hybrid tile/cluster deferred/forward lighting architecture. This template also
-      includes the <b>Shader Graph</b> tool, <b>Visual Effect Graph</b> tool, several
-      Presets to jump start development, and example content.
+  - heading: About SNAPS Packs
+    text: 'SNAPS provides Unity developers an exhaustive library of modular content designed to make prototyping and building first playables quick and easy. '
     linkText: 
     url: 
   - heading: 
-    text: This project uses the <b>Package Manager</b> to bring you the latest features
-      Unity has to offer. Open the Package Manager from <b>Windows > Package Manager</b>
-      and make sure you're using the most recent version of HDRP. To update packages,
-      select your desired package from the list on the left, and click the Update
-      to button in the bottom right corner.
+    text: "SNAPS prefabs are built to real-world scale but are designed to \u201Csnap\u201D
+      together when used with ProGrids. \nGrid snap measurements start at 1m and are
+      halved ( eg. 0.5, 0.25, 0.125 etc ) according to refinement needed to place
+      or position smaller objects."
     linkText: 
     url: 
-  - heading: Documentation
-    text: 'To read more about HDRP please see the <b>HDRP documentation</b> :'
-    linkText: High Definition Render Pipeline
-    url: https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@latest/index.html
   - heading: 
-    text: 'HDRP uses its own implementation of <b>post-processing</b>. It uses the
-      <b>Volume system</b> to allow you to localize post-processing effects to a
-      certain area of your Scene. For more information about post-processing and
-      the Volume system, see the pages :'
-    linkText: Post-processing
-    url: https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@latest/index.html?subfolder=/manual/Post-Processing-Main.html?preview=1
+    text: SNAP pack models were "modelled" entirely with ProBuilder, and can be further customized or modified with ProBuilder.
+    linkText: 
+    url: 
   - heading: 
-    text: 
-    linkText: Volumes System
-    url: https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@latest/index.html?subfolder=/manual/Volumes.html?preview=1
-  - heading: Sample Content
-    text: 'The <b>Unity HDRI Pack</b> is a great resource when working with HDRP.
-      You can use the HDRIs in this pack with the Look Dev tool. Download the Unity
-      HDRI Pack here:'
-    linkText: HDRI Package
-    url: https://assetstore.unity.com/packages/essentials/beta-projects/unity-hdri-pack-72511
-  - heading: 
-    text: 'Examples of complex projects that use HDRP :'
-  - heading: 
-    text: The <b>Fontainebleau</b> project contains examples of complex Material
-      usage, volumetric effects, decals, Shader Graphs, and more.
-    linkText: Fontainbleau demo
-    url: https://github.com/Unity-Technologies/FontainebleauDemo
-  - heading: 
-    text: The <b>Spaceship</b> project uses the Visual Effect Graph to showcase high
-      quality visual effects. This project also shows how to use scripting and user
-      interaction to trigger visual effects.
-    linkText: Spaceship demo
-    url: https://github.com/Unity-Technologies/SpaceshipDemo
-  - heading: 
-    text: The <b>VR Alchemist Lab</b> project is a small medieval laboratory that
-      showcases HDRP rendering features in VR. This project also shows interactive
-      effects.
-    linkText: VR Alchemist Lab demo
-    url: https://github.com/Unity-Technologies/VRAlchemyLab
-  - heading: Ray tracing (Preview)
-    text: 'This version of HDRP includes a preview of Ray tracing features. To read
-      more on this topic please see our <b>"Getting started"</b> guide :'
-    linkText: Getting started with Ray Tracing
-    url: https://docs.unity3d.com/Packages/com.unity.render-pipelines.high-definition@latest/index.html?subfolder=/manual/Ray-Tracing-Getting-Started.html?preview=1
-  - heading: 
-    text: 'Ray tracing features are also demonstrated in this small sample projet
-      :'
-    linkText: Small office Ray tracing
-    url: https://github.com/Unity-Technologies/SmallOfficeRayTracing
+    text: Each SNAPS Pack caters for a particular theme and while they can be used
+      together in a project, they are not designed to be "snap-able" between packs.
+      Different themes require different size and scale settings.
+    linkText: 
+    url: 
+  - heading: Requirements
+    text: SNAPS packs are meant to be used in unison with ProBuilder and ProGrids,
+      both available via the Package Manager. While the packs can be used without
+      using ProGrids, ProBuilder will need to be installed.
+    linkText: 
+    url: 
   loadedLayout: 1
