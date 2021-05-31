@@ -5,8 +5,6 @@ using UnityEngine.AI;
 public class DestructableWalls : InteractableObj
 {
     [SerializeField]
-    private AINavigationManager _AINavigationManager;
-
     public void ActivateDestruction(Vector3 AIForce)
     {
    
@@ -19,7 +17,6 @@ public class DestructableWalls : InteractableObj
             CapsuleCollider c = body.GetComponent<CapsuleCollider>();
             c.enabled = true;
         }
-        _AINavigationManager.regenerateNavmesh(0.5f);
         Destroy(gameObject);
     }
 

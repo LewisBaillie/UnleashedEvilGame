@@ -21,6 +21,11 @@ public class AIBigGuyScript : MonoBehaviour
         timeLeft = 6.0f;
     }
 
+    void wallCharge(GameObject wall)
+    {
+        Vector3.MoveTowards(transform.position, wall.transform.position, 5); 
+    }
+
     // Update is called once per frame
     void Update()
     {
