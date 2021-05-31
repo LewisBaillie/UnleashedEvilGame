@@ -74,7 +74,6 @@ public class HandObj : Obj
                                     break;
                                 }
                             }
-                            _ObjectInHand.transform.localRotation = this.transform.GetChild(0).rotation;
                             _ObjectInHand.transform.parent = null;                            
                             _ObjectInHand.GetComponent<Rigidbody>().isKinematic = false;
                             _ObjectInHand.GetComponent<ThrowingObj>().AddForce(_ThrowStengths);
