@@ -70,7 +70,7 @@ public class StealthObj : Obj
                             {
                                 if(obj != null)
                                 {
-                                    _Accessories.Remove(obj);
+                                    //_Accessories.Remove(obj);
                                 }
                                 if (obj.GetComponent<BoxCollider>())
                                 {
