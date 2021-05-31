@@ -213,4 +213,13 @@ public class MoveableObj : Obj
             _CanStand = true;
         }
     }
+
+    public bool CanStand()
+    {
+        if (!_CanStand)
+        {
+            return false;
+        }
+        return true;
+    }
 }
