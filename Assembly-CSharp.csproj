@@ -106,7 +106,9 @@
     <Compile Include="Assets\Assets\Standard Assets\CrossPlatformInput\Scripts\InputAxisScrollbar.cs" />
     <Compile Include="Assets\Assets\Standard Assets\CrossPlatformInput\Scripts\AxisTouchButton.cs" />
     <Compile Include="Assets\Scripts\Objects\AI Scripts\AIScreamerGuyScript.cs" />
+    <Compile Include="Assets\Scripts\SoundDetection\MakeNoise.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Scripts\SunShafts.cs" />
+    <Compile Include="Assets\Scripts\SoundDetection\Listener.cs" />
     <Compile Include="Assets\Assets\Standard Assets\CrossPlatformInput\Scripts\ButtonHandler.cs" />
     <Compile Include="Assets\Scripts\Objects\Interactable Object Class\InteractableObj.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Characters\FirstPersonCharacter\Scripts\HeadBob.cs" />
@@ -177,8 +179,7 @@
     <Compile Include="Assets\Scripts\Objects\Destructable walls\DestructableWalls.cs" />
     <Compile Include="Assets\Scripts\Input\LookY.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Utility\AutoMobileShaderSwitch.cs" />
-    <Compile Include="Assets\Scripts\SoundDetection\Listener.cs" />
-    <Compile Include="Assets\Scripts\SoundDetection\MakeNoise.cs" />
+    <Compile Include="Assets\Scripts\AudioScripts\PlayerAudio.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Shaders\Tonemapper.shader" />

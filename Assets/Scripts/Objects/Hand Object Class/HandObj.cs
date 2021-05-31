@@ -16,7 +16,7 @@ public class HandObj : Obj
     [SerializeField]
     private Camera _RayOutput;
     [SerializeField]
-    private Sound _Sounds;
+    private PlayerAudio _Sounds;
 
     [Header("Hand Settings")]
     [SerializeField]
@@ -62,7 +62,7 @@ public class HandObj : Obj
                 {
                     case ObjectType.ThrowingObj:
                         {
-                            _Sounds.PlaySound(SoundEffect.throwingSound);
+                            _Sounds.playPlayerAudio(PlayerAudio.SoundEffect.throwingSound);
                             foreach (GameObject item in _AllObjects)
                             {
                                 if (item.name == "Rock")
@@ -82,7 +82,7 @@ public class HandObj : Obj
                         }
                     case ObjectType.TorchObj:
                         {
-                            _Sounds.PlaySound(SoundEffect.torchSound);
+                            _Sounds.playPlayerAudio(PlayerAudio.SoundEffect.torchSound);
                             _ObjectInHand.GetComponent<TorchObj>().ItemAction();
                             break;
                         }
@@ -134,7 +134,7 @@ public class HandObj : Obj
                                     {
                                         if (item.name == "Torch")
                                         {
-                                            _Sounds.PlaySound(SoundEffect.pickupSound);
+                                            _Sounds.playPlayerAudio(PlayerAudio.SoundEffect.pickupSound);
                                             Destroy(g);
                                             item.SetActive(true);
                                             _ObjectInHand = item;
@@ -158,7 +158,7 @@ public class HandObj : Obj
                                     {
                                         if (item.name == "Rock")
                                         {
-                                            _Sounds.PlaySound(SoundEffect.pickupSound);
+                                            _Sounds.playPlayerAudio(PlayerAudio.SoundEffect.pickupSound);
                                             Destroy(g);
                                             item.SetActive(true);
                                             _ObjectInHand = item;
@@ -182,7 +182,7 @@ public class HandObj : Obj
                                     {
                                         if (item.name == "Key")
                                         {
-                                            _Sounds.PlaySound(SoundEffect.pickupSound);
+                                            _Sounds.playPlayerAudio(PlayerAudio.SoundEffect.pickupSound);
                                             item.SetActive(true);
                                             _ObjectInHand = item;
                                             _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(g);
@@ -207,7 +207,7 @@ public class HandObj : Obj
                                         _UI.text = "Unlock " + keyName + " Door";
                                         if (Input.GetKeyDown(_PickUpKey))
                                         {
-                                            _Sounds.PlaySound(SoundEffect.doorSound);
+                                            _Sounds.playPlayerAudio(PlayerAudio.SoundEffect.doorSound);
                                             _Player.ReturnInventory().RemoveObject(_Player.ReturnInventory().GetCurrentObject());
                                             _ObjectInHand.SetActive(false);
                                             _ObjectInHand = null;
