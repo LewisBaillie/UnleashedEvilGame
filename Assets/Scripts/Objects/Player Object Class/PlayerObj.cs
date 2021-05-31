@@ -85,6 +85,10 @@ public class PlayerObj : MoveableObj
         CalculateMovement();
         HieghtMaipulation();
         CalculateLean();
+        if(!CanStand())
+        {
+            SaveGame();
+        }
         //To be Removed outside of debugging
         if(Input.GetKeyDown(KeyCode.M))
         {
@@ -124,6 +128,11 @@ public class PlayerObj : MoveableObj
                 _Enemies[i].transform.rotation = save.EnemyRot[i];
             }
         }
+    }
+
+    public void NewObjectInHand()
+    {
+        SaveGame();
     }
 
     private void SaveGame()
