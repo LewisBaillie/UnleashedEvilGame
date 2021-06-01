@@ -214,6 +214,19 @@ public class MoveableObj : Obj
         }
     }
 
+    protected void SetStanding(bool b)
+    {
+        if(b)
+        {
+            _IsCrouched = false;
+        }
+        else
+        {
+            _IsCrouched = true;
+        }
+        CalculateHeight();
+    }
+
     public bool CanStand()
     {
         if (!_CanStand)
