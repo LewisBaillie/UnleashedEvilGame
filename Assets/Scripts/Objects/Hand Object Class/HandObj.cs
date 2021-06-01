@@ -195,6 +195,7 @@ public class HandObj : Obj
                                             item.SetActive(false);
                                         }
                                     }
+                                    _Player.GetComponent<PlayerObj>().NewObjectInHand();
                                 }
                                 break;
                             }
@@ -219,6 +220,7 @@ public class HandObj : Obj
                                             item.SetActive(false);
                                         }
                                     }
+                                    _Player.GetComponent<PlayerObj>().NewObjectInHand();
                                 }
                                 break;
                             }
@@ -245,6 +247,7 @@ public class HandObj : Obj
                                         _UI.enabled = true;
                                         _UI.text = "You need the " + g.GetComponent<DoorObj>().GetName() + " key for this door";
                                     }
+                                    _Player.GetComponent<PlayerObj>().NewObjectInHand();
                                 }
                                 else
                                 {

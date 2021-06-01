@@ -5,12 +5,19 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Timers;
+using System;
 
 public class PlayerObj : MoveableObj
 {
     private HandObj _Hand;
     [SerializeField]
     private Inventory _Inventory;
+    private System.Timers.Timer _SaveTimer;
+    [SerializeField]
+    private double _SaveTimerLength;
+    private bool _SaveNow;
+
 
     [Header("Save Settings")]
     [SerializeField]
@@ -20,7 +27,7 @@ public class PlayerObj : MoveableObj
 
     struct SaveFile
     {
-        public SaveFile(Transform t, Inventory inventory, bool IsCrouched, int AIP, GameObject[] Doors, GameObject[] Enemies)
+        public SaveFile(Transform t, Inventory inventory, bool IsStanding, int AIP, GameObject[] Doors, GameObject[] Enemies)
         {
             DoorsActive = new List<bool>();
             EnemyPos = new List<Vector3>();
@@ -51,7 +58,7 @@ public class PlayerObj : MoveableObj
                 EnemyScale.Add(item.transform.localScale);
                 EnemyRot.Add(item.transform.rotation);
             }
-            Standing = IsCrouched;
+            Standing = IsStanding;
             ActiveInventoryPos = AIP;
         }
         public Vector3 Pos;
@@ -67,7 +74,6 @@ public class PlayerObj : MoveableObj
         
     }
 
-
     virtual public void SetUpComponent()
     {
         _objType = ObjectType.PlayerObj;
@@ -76,23 +82,44 @@ public class PlayerObj : MoveableObj
 
     void Start()
     {
-        Application.persistentDataPath.Replace(Application.persistentDataPath, "C:/Users/h014086j/Documents");
+        _SaveNow = false;
+        _objType = ObjectType.PlayerObj;
+        _SaveTimer = new System.Timers.Timer();
+        _SaveTimer.Interval = _SaveTimerLength;
+        _SaveTimer.Elapsed += OnTimedEvent;
+        _SaveTimer.AutoReset = true;
+
+        _Inventory = new Inventory();
         //_Inventory = new Inventory();
-        SetUpComponent();
+        //SetUpComponent();
     }
+
+    private void OnTimedEvent(object sender, ElapsedEventArgs e)
+    {
+        _SaveNow = true;
+    }
+
 
     void Update()
     {
         CalculateMovement();
         HieghtMaipulation();
         CalculateLean();
-        if(!CanStand())
+        if(!CanStand() && !IsStanding())
         {
-            SaveGame();
+            if(!_SaveTimer.Enabled)
+                _SaveTimer.Enabled = true;
+                _SaveTimer.Start();
+        }
+        else
+        {
+            _SaveTimer.Stop();
+            _SaveTimer.Enabled = false;
         }
         //To be Removed outside of debugging
-        if(Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.M))
         {
+            _SaveNow = false;
             SaveGame();
             SceneManager.LoadScene("NewTestScene");
         }
@@ -100,10 +127,16 @@ public class PlayerObj : MoveableObj
         {
             LoadGame();
         }
+        if (_SaveNow)
+        {
+            SaveGame();
+        }
     }
 
     //https://www.raywenderlich.com/418-how-to-save-and-load-a-game-in-unity
     //https://www.c-sharpcorner.com/article/c-sharp-string-to-byte-array/
+    //https://www.tutorialspoint.com/Timer-in-Chash
+
 
     private void LoadGame()
     {
@@ -114,6 +147,16 @@ public class PlayerObj : MoveableObj
             transform.position = save.Pos;
             transform.localScale = save.Scale;
             transform.rotation = save.Rotation;
+            SetStanding(save.Standing);
+            Vector3 LocalePos = transform.GetChild(0).localPosition;
+            if (save.Standing && LocalePos.y > 0.5)
+            {
+                transform.GetChild(0).localPosition = new Vector3(LocalePos.x, 0.5f, LocalePos.z);
+            }
+            else
+            {
+                transform.GetChild(0).localPosition = new Vector3(LocalePos.x, -0.5f, LocalePos.z);
+            }
             for (int i = 0; i < save.DoorsActive.Count; i++)
             {
                 _Doors[i].SetActive(save.DoorsActive[i]);
@@ -157,8 +200,10 @@ public class PlayerObj : MoveableObj
             file.Write(bytes, 0, bytes.Length);
             file.Close();
         }
+        _SaveNow = false;
         Debug.Log("File saved at " + Application.persistentDataPath + "/gamesave.save");
     }
+
 
     public Inventory ReturnInventory()
     {
