@@ -21,7 +21,6 @@ public class HandObj : Obj
     [Header("Hand Settings")]
     [SerializeField]
     private float _ArmLength;
-    [SerializeField]
     private GameObject _ObjectInHand;
     [SerializeField]
     private Vector3 _ThrowStengths;
@@ -43,6 +42,15 @@ public class HandObj : Obj
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         Cursor.lockState = CursorLockMode.Locked;
         _Hotbar.enabled = true;
+        foreach (GameObject item in _AllObjects)
+        {
+            if (item.name == "Torch")
+            {
+                item.SetActive(true);
+                _ObjectInHand = item;
+                _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(item);
+            }
+        }
     }
 
     // Update is called once per frame

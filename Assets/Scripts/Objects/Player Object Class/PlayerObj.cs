@@ -11,6 +11,7 @@ using System;
 public class PlayerObj : MoveableObj
 {
     private HandObj _Hand;
+    [SerializeField]
     private Inventory _Inventory;
     private System.Timers.Timer _SaveTimer;
     [SerializeField]
@@ -89,6 +90,8 @@ public class PlayerObj : MoveableObj
         _SaveTimer.AutoReset = true;
 
         _Inventory = new Inventory();
+        //_Inventory = new Inventory();
+        //SetUpComponent();
     }
 
     private void OnTimedEvent(object sender, ElapsedEventArgs e)
