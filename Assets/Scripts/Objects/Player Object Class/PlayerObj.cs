@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class PlayerObj : MoveableObj
 {
     private HandObj _Hand;
+    [SerializeField]
     private Inventory _Inventory;
 
     [Header("Save Settings")]
@@ -76,7 +77,7 @@ public class PlayerObj : MoveableObj
     void Start()
     {
         Application.persistentDataPath.Replace(Application.persistentDataPath, "C:/Users/h014086j/Documents");
-        _Inventory = new Inventory();
+        //_Inventory = new Inventory();
         SetUpComponent();
     }
 
