@@ -9,8 +9,6 @@ public class MoveableObj : Obj
 {
     [Header("Control Settings")]
     [SerializeField]
-    private KeyCode _RunKey = KeyCode.LeftShift;
-    [SerializeField]
     private KeyCode _CrouchKey = KeyCode.C;
     [SerializeField]
     private KeyCode _LeanLeftKey = KeyCode.Q;
@@ -20,13 +18,9 @@ public class MoveableObj : Obj
     [Tooltip("Controls factors to do with movement")]
     [SerializeField]
     private float _Speed;
-    [SerializeField]
-    private float _SprintSpeed;
     [Header("Crouch Settings")]
     [Tooltip("Controls factors to do with crouching")]
-    [SerializeField]
     private Vector3 _positionCache;
-    [SerializeField]
     private float _Height;
     [SerializeField]
     private float _CrouchHeight;
@@ -34,10 +28,8 @@ public class MoveableObj : Obj
     private CapsuleCollider _StandCollider;
     [SerializeField]
     private float _CrouchAnimSpeed;
-    [SerializeField]
-    private bool _IsCrouched;
-    [SerializeField]
-    private bool _CanStand;
+    private bool _IsCrouched = false;
+    private bool _CanStand = true;
     [Header("Physics Settings")]
     [Tooltip("Controls factors to do with physics")]
     [SerializeField]
@@ -54,9 +46,7 @@ public class MoveableObj : Obj
     [SerializeField]
     private GameObject _Head;
     [SerializeField]
-    private Vector3 _LeanRight;
-    [SerializeField]
-    private Vector3 _LeanLeft;
+    private Vector3 _LeanDistance;
     [SerializeField]
     private float _LeanSpeed;
 
@@ -101,12 +91,12 @@ public class MoveableObj : Obj
         _Time += Time.deltaTime / _LeanSpeed;
         if (Input.GetKeyDown(_LeanLeftKey))
         {
-            _Head.transform.localEulerAngles = new Vector3(_Origin.x, _Origin.y, Mathf.Lerp(_Head.transform.localEulerAngles.z, _LeanLeft.z, _Time));
+            _Head.transform.localEulerAngles = new Vector3(_Origin.x, _Origin.y, Mathf.Lerp(_Head.transform.localEulerAngles.z, _LeanDistance.z, _Time));
             _Head.transform.localPosition = new Vector3(Mathf.Lerp(_Head.transform.localPosition.x, -_PeekLength, _Time),_Head.transform.localPosition.y, _Head.transform.localPosition.z);
         }
         else if (Input.GetKeyDown(_LeanRightKey))
         {
-            _Head.transform.localEulerAngles = new Vector3(_Origin.x, _Origin.y, Mathf.Lerp(_Head.transform.localEulerAngles.z, _LeanRight.z, _Time));
+            _Head.transform.localEulerAngles = new Vector3(_Origin.x, _Origin.y, Mathf.Lerp(_Head.transform.localEulerAngles.z, -_LeanDistance.z, _Time));
             _Head.transform.localPosition = new Vector3(Mathf.Lerp(_Head.transform.localPosition.x, _PeekLength, _Time), _Head.transform.localPosition.y, _Head.transform.localPosition.z);
         }
         else if(Input.GetKeyUp(_LeanLeftKey) || Input.GetKeyUp(_LeanRightKey))
@@ -121,14 +111,7 @@ public class MoveableObj : Obj
     protected void CalculateMovement()
     {
         Vector3 dir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        if(Input.GetKeyDown(_RunKey))
-        {
-            Move(ConvertToWorldSpace(ApplyGravity(dir * (_Speed + _SprintSpeed))));
-        }
-        else
-        {
-            Move(ConvertToWorldSpace(ApplyGravity(dir * _Speed)));
-        }
+        Move(ConvertToWorldSpace(ApplyGravity(dir * _Speed)));
     }
     //Calculates movement, values are passed through the function
     protected void CalculateMovement(Vector3 direction)

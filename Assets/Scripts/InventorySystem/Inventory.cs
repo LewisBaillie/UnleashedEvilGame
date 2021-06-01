@@ -10,9 +10,7 @@ using System.Runtime.Serialization;
 /// </summary>
 /// 
 
-
-[SerializeField]
-public class Inventory
+public class Inventory : MonoBehaviour
 {
     private GameObject[] _Inventory;
     private int _ActivePosition = 0;
