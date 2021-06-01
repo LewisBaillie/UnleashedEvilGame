@@ -64,46 +64,7 @@ public class StealthObj : Obj
             {
                 case ObjectType.PlayerObj:
                     {
-                        if (g.GetComponent<PlayerObj>().IsStanding())
-                        {
-                            foreach (GameObject obj in _Accessories)
-                            {
-                                if(obj != null)
-                                {
-                                    //_Accessories.Remove(obj);
-                                }
-                                if (obj.GetComponent<BoxCollider>())
-                                {
-                                    obj.GetComponent<BoxCollider>().enabled = true;
-                                }
-                                if (obj.GetComponent<SphereCollider>())
-                                {
-                                    obj.GetComponent<SphereCollider>().enabled = true;
-                                }
-                                if (obj.GetComponent<Rigidbody>())
-                                {
-                                    obj.GetComponent<Rigidbody>().useGravity = true;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            foreach (GameObject obj in _Accessories)
-                            {
-                                if (obj.GetComponent<Rigidbody>())
-                                {
-                                    obj.GetComponent<Rigidbody>().useGravity = false;
-                                }
-                                if (obj.GetComponent<BoxCollider>())
-                                {
-                                    obj.GetComponent<BoxCollider>().enabled = false;
-                                }
-                                if (obj.GetComponent<SphereCollider>())
-                                {
-                                    obj.GetComponent<SphereCollider>().enabled = false;
-                                }
-                            }
-                        }
+                        ApplyEffects(g);
                         break;
                     }
 
@@ -136,6 +97,47 @@ public class StealthObj : Obj
                 }
             }
                 
+        }
+    }
+
+
+    private void ApplyEffects(GameObject g)
+    {
+        if (g.GetComponent<PlayerObj>().IsStanding())
+        {
+            foreach (GameObject obj in _Accessories)
+            {
+                if (obj.GetComponent<BoxCollider>())
+                {
+                    obj.GetComponent<BoxCollider>().enabled = true;
+                }
+                if (obj.GetComponent<SphereCollider>())
+                {
+                    obj.GetComponent<SphereCollider>().enabled = true;
+                }
+                if (obj.GetComponent<Rigidbody>())
+                {
+                    obj.GetComponent<Rigidbody>().useGravity = true;
+                }
+            }
+        }
+        else
+        {
+            foreach (GameObject obj in _Accessories)
+            {
+                if (obj.GetComponent<Rigidbody>())
+                {
+                    obj.GetComponent<Rigidbody>().useGravity = false;
+                }
+                if (obj.GetComponent<BoxCollider>())
+                {
+                    obj.GetComponent<BoxCollider>().enabled = false;
+                }
+                if (obj.GetComponent<SphereCollider>())
+                {
+                    obj.GetComponent<SphereCollider>().enabled = false;
+                }
+            }
         }
     }
 }
