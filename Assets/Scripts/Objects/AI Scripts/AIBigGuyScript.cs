@@ -11,6 +11,8 @@ public class AIBigGuyScript : MonoBehaviour
     NavMeshAgent agent;
     string state;
     float timeLeft = 5.0f; //TIME IN SECONDS, starts from 5 & counts down
+    [SerializeField]
+    private GameObject m_AINavigationManager;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +21,22 @@ public class AIBigGuyScript : MonoBehaviour
         state = "chase";
         agent.GetComponent<AIFunctions>().AIStartWander(agent);
         timeLeft = 6.0f;
+    }
+
+    void Charge(GameObject destructibleWall)
+    {
+        Destroy(destructibleWall);
+        m_AINavigationManager.GetComponent<AINavigationManager>().Regen();
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "DestructibleWall")
+        {
+            if (state == "chase")
+            {
+                Charge(other.gameObject);
+            }
+        }
     }
 
     // Update is called once per frame
