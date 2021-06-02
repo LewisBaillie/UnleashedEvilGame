@@ -17,6 +17,9 @@ public class UI_Manager : MonoBehaviour
     private Button _LoadButton;
     [SerializeField]
     private Button _QuitButton;
+    [SerializeField]
+    private GameObject[] _ItemsToPause;
+
 
     private void Start()
     {
@@ -39,6 +42,17 @@ public class UI_Manager : MonoBehaviour
                 _SaveButton.gameObject.SetActive(true);
                 _LoadButton.gameObject.SetActive(true);
                 _QuitButton.gameObject.SetActive(true);
+                foreach (GameObject item in _ItemsToPause)
+                {
+                    if(item.GetComponent<PlayerObj>() != null)
+                    {
+                        item.GetComponent<PlayerObj>().Paused(true);
+                    }
+                    else
+                    {
+                        item.SetActive(false);
+                    }
+                }
             }
             else
             {
@@ -47,6 +61,17 @@ public class UI_Manager : MonoBehaviour
                 _SaveButton.gameObject.SetActive(false);
                 _LoadButton.gameObject.SetActive(false);
                 _QuitButton.gameObject.SetActive(false);
+                foreach (GameObject item in _ItemsToPause)
+                {
+                    if (item.GetComponent<PlayerObj>() != null)
+                    {
+                        item.GetComponent<PlayerObj>().Paused(false);
+                    }
+                    else
+                    {
+                        item.SetActive(true);
+                    }
+                }
             }
         }
     }

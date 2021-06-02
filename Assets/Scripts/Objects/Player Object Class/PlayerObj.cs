@@ -13,6 +13,10 @@ public class PlayerObj : MoveableObj
     [SerializeField]
     private HandObj _Hand;
     [SerializeField]
+    private LookX _LookX;
+    [SerializeField]
+    private LookY _LookY;
+    [SerializeField]
     private Inventory _Inventory;
     private System.Timers.Timer _SaveTimer;
     [SerializeField]
@@ -21,6 +25,7 @@ public class PlayerObj : MoveableObj
     private bool _MidpointReached;
     private bool _EndReached;
     private bool _FirstUpdate = true;
+    private bool _Paused = false;
 
 
     [Header("Save Settings")]
@@ -94,6 +99,7 @@ public class PlayerObj : MoveableObj
         _SaveTimer.Elapsed += OnTimedEvent;
         _SaveTimer.AutoReset = true;
         SetUpComponent();
+        _LookY = GetComponentInChildren<LookY>();
     }
 
     private void OnTimedEvent(object sender, ElapsedEventArgs e)
@@ -109,33 +115,36 @@ public class PlayerObj : MoveableObj
             _Hand.AquireTorch();
             _FirstUpdate = false;
         }
-        CalculateMovement();
-        HieghtMaipulation();
-        CalculateLean();
-        if(!CanStand() && !IsStanding())
+        if(!_Paused)
         {
-            if(!_SaveTimer.Enabled)
-                _SaveTimer.Enabled = true;
+            CalculateMovement();
+            HieghtMaipulation();
+            CalculateLean();
+            if (!CanStand() && !IsStanding())
+            {
+                if (!_SaveTimer.Enabled)
+                    _SaveTimer.Enabled = true;
                 _SaveTimer.Start();
-        }
-        else
-        {
-            _SaveTimer.Stop();
-            _SaveTimer.Enabled = false;
-        }
-        //To be Removed outside of debugging
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            _SaveNow = false;
-            SaveGame();
-        }
-        if(Input.GetKeyDown(KeyCode.L))
-        {
-            LoadGame();
-        }
-        if (_SaveNow)
-        {
-            SaveGame();
+            }
+            else
+            {
+                _SaveTimer.Stop();
+                _SaveTimer.Enabled = false;
+            }
+            //To be Removed outside of debugging
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                _SaveNow = false;
+                SaveGame();
+            }
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                LoadGame();
+            }
+            if (_SaveNow)
+            {
+                SaveGame();
+            }
         }
     }
 
@@ -183,6 +192,21 @@ public class PlayerObj : MoveableObj
     public void NewObjectInHand()
     {
         SaveGame();
+    }
+
+    public void Paused(bool b)
+    {
+        _Paused = b;
+        if(b)
+        {
+            _LookX.enabled = false;
+            _LookY.enabled = false;
+        }         
+        else      
+        {
+            _LookX.enabled = true;
+            _LookY.enabled = true;
+        }
     }
 
     private void SaveGame()
