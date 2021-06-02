@@ -10,6 +10,7 @@ using System;
 
 public class PlayerObj : MoveableObj
 {
+    [SerializeField]
     private HandObj _Hand;
     [SerializeField]
     private Inventory _Inventory;
@@ -17,6 +18,9 @@ public class PlayerObj : MoveableObj
     [SerializeField]
     private double _SaveTimerLength;
     private bool _SaveNow;
+    private bool _MidpointReached;
+    private bool _EndReached;
+    private bool _FirstUpdate = true;
 
 
     [Header("Save Settings")]
@@ -82,16 +86,14 @@ public class PlayerObj : MoveableObj
 
     void Start()
     {
+        _Inventory = new Inventory();
         _SaveNow = false;
         _objType = ObjectType.PlayerObj;
         _SaveTimer = new System.Timers.Timer();
         _SaveTimer.Interval = _SaveTimerLength;
         _SaveTimer.Elapsed += OnTimedEvent;
         _SaveTimer.AutoReset = true;
-
-        _Inventory = new Inventory();
-        //_Inventory = new Inventory();
-        //SetUpComponent();
+        SetUpComponent();
     }
 
     private void OnTimedEvent(object sender, ElapsedEventArgs e)
@@ -102,6 +104,11 @@ public class PlayerObj : MoveableObj
 
     void Update()
     {
+        if(_FirstUpdate)
+        {
+            _Hand.AquireTorch();
+            _FirstUpdate = false;
+        }
         CalculateMovement();
         HieghtMaipulation();
         CalculateLean();
@@ -121,7 +128,6 @@ public class PlayerObj : MoveableObj
         {
             _SaveNow = false;
             SaveGame();
-            SceneManager.LoadScene("NewTestScene");
         }
         if(Input.GetKeyDown(KeyCode.L))
         {
@@ -204,7 +210,19 @@ public class PlayerObj : MoveableObj
         Debug.Log("File saved at " + Application.persistentDataPath + "/gamesave.save");
     }
 
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Midpoint")
+        {
+            Debug.Log("Reached Midpoint");
+            _MidpointReached = true;
+        }
+        if (other.tag == "Endpoint" && _MidpointReached)
+        {
+            _EndReached = true;
+            Debug.Log("Reached endpoint");
+        }
+    }
     public Inventory ReturnInventory()
     {
         return _Inventory;

@@ -82,6 +82,10 @@ public class StealthObj : Obj
                 g.GetComponent<PlayerObj>().RestrictStanding(false);
                 foreach (GameObject obj in _Accessories)
                 {
+                    if (obj.GetComponent<MeshCollider>())
+                    {
+                        obj.GetComponent<MeshCollider>().enabled = true;
+                    }
                     if (obj.GetComponent<BoxCollider>())
                     {
                         obj.GetComponent<BoxCollider>().enabled = true;
@@ -107,6 +111,10 @@ public class StealthObj : Obj
         {
             foreach (GameObject obj in _Accessories)
             {
+                if (obj.GetComponent<MeshCollider>())
+                {
+                    obj.GetComponent<MeshCollider>().enabled = true;
+                }
                 if (obj.GetComponent<BoxCollider>())
                 {
                     obj.GetComponent<BoxCollider>().enabled = true;
@@ -125,6 +133,10 @@ public class StealthObj : Obj
         {
             foreach (GameObject obj in _Accessories)
             {
+                if (obj.GetComponent<MeshCollider>())
+                {
+                    obj.GetComponent<MeshCollider>().enabled = false;
+                }
                 if (obj.GetComponent<Rigidbody>())
                 {
                     obj.GetComponent<Rigidbody>().useGravity = false;

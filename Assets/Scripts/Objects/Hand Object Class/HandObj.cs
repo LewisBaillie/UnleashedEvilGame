@@ -42,13 +42,17 @@ public class HandObj : Obj
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         Cursor.lockState = CursorLockMode.Locked;
         _Hotbar.enabled = true;
+    }
+
+    public void AquireTorch()
+    {
         foreach (GameObject item in _AllObjects)
         {
             if (item.name == "Torch")
             {
                 item.SetActive(true);
                 _ObjectInHand = item;
-                _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(item);
+                _Player.ReturnInventory().AddObjectToInvent(item);
             }
         }
     }
