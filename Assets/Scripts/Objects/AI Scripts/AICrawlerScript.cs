@@ -12,6 +12,8 @@ public class AICrawlerScript : MonoBehaviour
     string state;
     float timeLeft = 5.0f; //TIME IN SECONDS, starts from 5 & counts down
 
+    GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +37,11 @@ public class AICrawlerScript : MonoBehaviour
         else if (state == "search")
         {
             //Search Update Function
+        }
+
+        if (target.transform == agent.transform)
+        {
+            player.GetComponent<Death>().playerDie();
         }
     }
 }
