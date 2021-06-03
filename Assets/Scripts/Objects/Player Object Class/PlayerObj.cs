@@ -153,7 +153,7 @@ public class PlayerObj : MoveableObj
     //https://www.tutorialspoint.com/Timer-in-Chash
 
 
-    private void LoadGame()
+    public void LoadGame()
     {
         if (System.IO.File.Exists(Application.persistentDataPath + "/gamesave.save"))
         {
@@ -199,17 +199,19 @@ public class PlayerObj : MoveableObj
         _Paused = b;
         if(b)
         {
+            _Hand.FreeCursor(b);
             _LookX.enabled = false;
             _LookY.enabled = false;
         }         
         else      
         {
+            _Hand.FreeCursor(b);
             _LookX.enabled = true;
             _LookY.enabled = true;
         }
     }
 
-    private void SaveGame()
+    public void SaveGame()
     {
         if(System.IO.File.Exists(Application.persistentDataPath + "/gamesave.save"))
         {

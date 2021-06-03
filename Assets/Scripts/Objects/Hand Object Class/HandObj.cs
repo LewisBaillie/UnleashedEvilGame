@@ -31,6 +31,7 @@ public class HandObj : Obj
     private List<GameObject> _AllObjects;
 
     bool DeleteOnNextAction;
+    private bool _Paused;
 
     // Start is called before the first frame update
     void Start()
@@ -65,10 +66,24 @@ public class HandObj : Obj
         HandleHotbar();
     }
 
+    public void FreeCursor(bool b)
+    {
+        _Paused = b;
+        if (b)
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
     //This function controls what objects the user is handling and this current time.
     private void HandleHoldingObjects()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !_Paused)
         {
             if(_ObjectInHand != null)
             {

@@ -35,42 +35,47 @@ public class UI_Manager : MonoBehaviour
     {
         if(Input.GetKeyDown(_PauseMenuKey))
         {
-            if(_PauseMenuText.gameObject.activeSelf == false)
+            PauseGame();
+        }
+    }
+
+    public void PauseGame()
+    {
+        if (_PauseMenuText.gameObject.activeSelf == false)
+        {
+            _PauseMenuText.gameObject.SetActive(true);
+            _ResumeButton.gameObject.SetActive(true);
+            _SaveButton.gameObject.SetActive(true);
+            _LoadButton.gameObject.SetActive(true);
+            _QuitButton.gameObject.SetActive(true);
+            foreach (GameObject item in _ItemsToPause)
             {
-                _PauseMenuText.gameObject.SetActive(true);
-                _ResumeButton.gameObject.SetActive(true);
-                _SaveButton.gameObject.SetActive(true);
-                _LoadButton.gameObject.SetActive(true);
-                _QuitButton.gameObject.SetActive(true);
-                foreach (GameObject item in _ItemsToPause)
+                if (item.GetComponent<PlayerObj>() != null)
                 {
-                    if(item.GetComponent<PlayerObj>() != null)
-                    {
-                        item.GetComponent<PlayerObj>().Paused(true);
-                    }
-                    else
-                    {
-                        item.SetActive(false);
-                    }
+                    item.GetComponent<PlayerObj>().Paused(true);
+                }
+                else
+                {
+                    item.SetActive(false);
                 }
             }
-            else
+        }
+        else
+        {
+            _PauseMenuText.gameObject.SetActive(false);
+            _ResumeButton.gameObject.SetActive(false);
+            _SaveButton.gameObject.SetActive(false);
+            _LoadButton.gameObject.SetActive(false);
+            _QuitButton.gameObject.SetActive(false);
+            foreach (GameObject item in _ItemsToPause)
             {
-                _PauseMenuText.gameObject.SetActive(false);
-                _ResumeButton.gameObject.SetActive(false);
-                _SaveButton.gameObject.SetActive(false);
-                _LoadButton.gameObject.SetActive(false);
-                _QuitButton.gameObject.SetActive(false);
-                foreach (GameObject item in _ItemsToPause)
+                if (item.GetComponent<PlayerObj>() != null)
                 {
-                    if (item.GetComponent<PlayerObj>() != null)
-                    {
-                        item.GetComponent<PlayerObj>().Paused(false);
-                    }
-                    else
-                    {
-                        item.SetActive(true);
-                    }
+                    item.GetComponent<PlayerObj>().Paused(false);
+                }
+                else
+                {
+                    item.SetActive(true);
                 }
             }
         }
