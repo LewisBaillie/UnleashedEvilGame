@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 6937740299667961927}
   - component: {fileID: 6937740299667961926}
   - component: {fileID: 6937740299667961924}
-  - component: {fileID: 6847389055291286403}
+  - component: {fileID: -711460284726523980}
+  - component: {fileID: 1444516347257625340}
   m_Layer: 0
   m_Name: BigMonster
   m_TagString: Untagged
@@ -147,16 +148,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
---- !u!65 &6847389055291286403
-BoxCollider:
+  m_AINavigationManager: {fileID: 0}
+--- !u!114 &-711460284726523980
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6937740299667961921}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.0000001, y: 2.0000002, z: 1.0000001}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5adadb0314aeca94483355cc35a49f07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterID: 4
+--- !u!114 &1444516347257625340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6937740299667961921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f2b76d60bb92e046ba6b84bdc4ea967, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

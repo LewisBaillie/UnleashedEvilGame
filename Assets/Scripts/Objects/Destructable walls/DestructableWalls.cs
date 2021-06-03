@@ -38,11 +38,6 @@ public class DestructableWalls : InteractableObj
         }
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-
-    }
-
     //https://stackoverflow.com/questions/3365337/best-way-to-generate-a-random-float-in-c-sharp
     private float NextFloat(System.Random random)
     {

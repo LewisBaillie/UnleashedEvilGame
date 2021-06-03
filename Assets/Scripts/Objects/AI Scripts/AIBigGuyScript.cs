@@ -25,13 +25,12 @@ public class AIBigGuyScript : MonoBehaviour
 
     void Charge(GameObject destructibleWall)
     {
+        m_AINavigationManager.GetComponent<AINavigationManager>().RegenMesh(destructibleWall);
         Destroy(destructibleWall);
-        m_AINavigationManager.GetComponent<AINavigationManager>().Regen();
     }
     void OnTriggerEnter(Collider other)
     {
-        //if (other.tag == "DestructibleWall")
-        if (other.gameObject.name == "WallDestructiblePrefab")
+        if (other.tag == "DestructibleWall")
         {
             if (state == "chase")
             {
