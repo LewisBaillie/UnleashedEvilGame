@@ -30,7 +30,8 @@ public class AIBigGuyScript : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "DestructibleWall")
+        //if (other.tag == "DestructibleWall")
+        if (other.gameObject.name == "WallDestructiblePrefab")
         {
             if (state == "chase")
             {
