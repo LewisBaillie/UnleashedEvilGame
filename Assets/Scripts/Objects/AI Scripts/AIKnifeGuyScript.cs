@@ -12,6 +12,8 @@ public class AIKnifeGuyScript : MonoBehaviour
     string state;
     float timeLeft = 5.0f; //TIME IN SECONDS, starts from 5 & counts down
 
+    GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +22,14 @@ public class AIKnifeGuyScript : MonoBehaviour
         agent.GetComponent<AIFunctions>().AIStartWander(agent);
         timeLeft = 6.0f;
     }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            player.GetComponent<Death>().playerDie();
+        }
+    }
+
 
     // Update is called once per frame
     void Update()

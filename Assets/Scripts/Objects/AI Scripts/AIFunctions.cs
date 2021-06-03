@@ -51,7 +51,7 @@ public class AIFunctions : MonoBehaviour
     //Update Search AI
 
 
-    //--------------------------State Control & Misc.--------------------------------------------
+    //--------------------------State Control & Misc.-------------------------
     //Spot player
     public void AISpotPlayer(NavMeshAgent agent, Transform target, string state)
     {
@@ -64,7 +64,6 @@ public class AIFunctions : MonoBehaviour
         //if AI loses player
         state = "search"; //In bounding sphere around current position
     }
-
 }
 
 

@@ -14,6 +14,8 @@ public class AIBigGuyScript : MonoBehaviour
     [SerializeField]
     private GameObject m_AINavigationManager;
 
+    GameObject player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,7 @@ public class AIBigGuyScript : MonoBehaviour
         state = "chase";
         agent.GetComponent<AIFunctions>().AIStartWander(agent);
         timeLeft = 6.0f;
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Charge(GameObject destructibleWall)
@@ -36,6 +39,10 @@ public class AIBigGuyScript : MonoBehaviour
             {
                 Charge(other.gameObject);
             }
+        }
+        else if(other.tag == "Player")
+        {
+            player.GetComponent<Death>().playerDie();
         }
     }
 
