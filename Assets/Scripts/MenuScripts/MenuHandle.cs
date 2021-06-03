@@ -28,6 +28,12 @@ public class MenuHandle : MonoBehaviour
         mainMenu.SetActive(true);
     }
 
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene(1);
+    }
+
+
     public void QuitGame()
     {
         Application.Quit();

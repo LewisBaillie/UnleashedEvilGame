@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UI_Manager : MonoBehaviour
 {
@@ -80,4 +81,9 @@ public class UI_Manager : MonoBehaviour
             }
         }
     }
+    public void QuitGame()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
 }

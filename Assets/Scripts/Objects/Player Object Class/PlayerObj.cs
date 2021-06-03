@@ -11,6 +11,12 @@ using System;
 public class PlayerObj : MoveableObj
 {
     [SerializeField]
+    private GameObject _KeyPrefab;
+    [SerializeField]
+    private GameObject _RockPrefab;
+    [SerializeField]
+    private GameObject _TorchPrefab;
+    [SerializeField]
     private HandObj _Hand;
     [SerializeField]
     private LookX _LookX;
@@ -42,14 +48,32 @@ public class PlayerObj : MoveableObj
             EnemyPos = new List<Vector3>();
             EnemyScale = new List<Vector3>();
             EnemyRot = new List<Quaternion>();
-            I = new GameObject[10];
             Pos = t.position;
             Scale = t.localScale;
             Rotation = t.rotation;
-            for (int i = 0; i < I.Length; i++)
+            Rocks = 0;
+            List<string> K = new List<string>();
+            for (int i = 0; i < 10; i++)
             {
-                I[i] = inventory.GrabObjectFromInvent(i);
+                GameObject g = inventory.GrabObjectFromInvent(i);
+                if (g != null)
+                {
+                    switch (g.GetComponent<Obj>().ReturnObjectType())
+                    {
+                        case ObjectType.ThrowingObj:
+                            {
+                                Rocks++;
+                                break;
+                            }
+                        case ObjectType.KeyObj:
+                            {
+                                K.Add(g.GetComponent<KeyObj>().GetName());
+                                break;
+                            }
+                    }
+                }
             }
+            Keys = K.ToArray();
             foreach (GameObject item in Doors)
             {
                 if (item.activeInHierarchy)
@@ -73,7 +97,8 @@ public class PlayerObj : MoveableObj
         public Vector3 Pos;
         public Vector3 Scale;
         public Quaternion Rotation;
-        public GameObject[] I;
+        public int Rocks;
+        public string[] Keys;
         public bool Standing;
         public int ActiveInventoryPos;
         public List<bool> DoorsActive;
@@ -155,6 +180,10 @@ public class PlayerObj : MoveableObj
 
     public void LoadGame()
     {
+        for (int i = 0; i < 10; i++)
+        {
+            _Inventory.RemoveObject(_Inventory.GrabObjectFromInvent(i));
+        }
         if (System.IO.File.Exists(Application.persistentDataPath + "/gamesave.save"))
         {
             string json = System.IO.File.ReadAllText(Application.persistentDataPath + "/gamesave.save");
@@ -185,6 +214,21 @@ public class PlayerObj : MoveableObj
                 _Enemies[i].transform.position = save.EnemyPos[i];
                 _Enemies[i].transform.localScale = save.EnemyScale[i];
                 _Enemies[i].transform.rotation = save.EnemyRot[i];
+            }
+            GameObject g = Instantiate(_TorchPrefab);
+            g.name = "Torch";
+            _Inventory.AddObjectToInvent(g);
+            foreach (string item in save.Keys)
+            {
+                GameObject go = Instantiate(_KeyPrefab);
+                g.GetComponent<KeyObj>().SetName(item);
+                _Inventory.AddObjectToInvent(go);
+            }
+            for (int i = 0; i < save.Rocks; i++)
+            {
+                GameObject GO = Instantiate(_RockPrefab);
+                g.name = "Rock";
+                _Inventory.AddObjectToInvent(GO);
             }
         }
     }
@@ -245,7 +289,8 @@ public class PlayerObj : MoveableObj
         }
         if (other.tag == "Endpoint" && _MidpointReached)
         {
-            _EndReached = true;
+            _Hand.FreeCursor(true);
+            SceneManager.LoadScene(3);
             Debug.Log("Reached endpoint");
         }
     }
