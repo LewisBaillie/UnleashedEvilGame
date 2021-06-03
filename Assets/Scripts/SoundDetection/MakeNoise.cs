@@ -14,7 +14,7 @@ public class MakeNoise : MonoBehaviour
     private float m_zDistance;
     private float m_hypotenuseDistance;
 
-    private void MakeSound()
+    public void MakeSound()
     {
         m_Enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
