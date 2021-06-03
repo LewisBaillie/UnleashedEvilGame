@@ -84,7 +84,9 @@ public class HandObj : Obj
                             }
                             _ObjectInHand.transform.parent = null;                            
                             _ObjectInHand.GetComponent<Rigidbody>().isKinematic = false;
-                            _ObjectInHand.GetComponent<ThrowingObj>().AddForce(_ThrowStengths);
+                            _ObjectInHand.GetComponent<Rigidbody>().useGravity = true;
+                            _ObjectInHand.GetComponent<ThrowingObj>().SetIsThrown(true);
+                            _ObjectInHand.GetComponent<ThrowingObj>().AddForce(_ThrowStengths);      
                             _Player.ReturnInventory().RemoveObject(_Player.ReturnInventory().GetCurrentObject()); 
                             _ObjectInHand = null;
                             break;
