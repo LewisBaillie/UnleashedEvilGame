@@ -31,6 +31,7 @@ public class HandObj : Obj
     private List<GameObject> _AllObjects;
 
     bool DeleteOnNextAction;
+    private bool _Paused;
 
     // Start is called before the first frame update
     void Start()
@@ -42,13 +43,17 @@ public class HandObj : Obj
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         Cursor.lockState = CursorLockMode.Locked;
         _Hotbar.enabled = true;
+    }
+
+    public void AquireTorch()
+    {
         foreach (GameObject item in _AllObjects)
         {
             if (item.name == "Torch")
             {
                 item.SetActive(true);
                 _ObjectInHand = item;
-                _Player.GetComponent<PlayerObj>().ReturnInventory().AddObjectToInvent(item);
+                _Player.ReturnInventory().AddObjectToInvent(item);
             }
         }
     }
@@ -61,10 +66,24 @@ public class HandObj : Obj
         HandleHotbar();
     }
 
+    public void FreeCursor(bool b)
+    {
+        _Paused = b;
+        if (b)
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
     //This function controls what objects the user is handling and this current time.
     private void HandleHoldingObjects()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !_Paused)
         {
             if(_ObjectInHand != null)
             {

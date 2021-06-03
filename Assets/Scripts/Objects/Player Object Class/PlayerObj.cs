@@ -10,13 +10,22 @@ using System;
 
 public class PlayerObj : MoveableObj
 {
+    [SerializeField]
     private HandObj _Hand;
+    [SerializeField]
+    private LookX _LookX;
+    [SerializeField]
+    private LookY _LookY;
     [SerializeField]
     private Inventory _Inventory;
     private System.Timers.Timer _SaveTimer;
     [SerializeField]
     private double _SaveTimerLength;
     private bool _SaveNow;
+    private bool _MidpointReached;
+    private bool _EndReached;
+    private bool _FirstUpdate = true;
+    private bool _Paused = false;
 
 
     [Header("Save Settings")]
@@ -82,16 +91,15 @@ public class PlayerObj : MoveableObj
 
     void Start()
     {
+        _Inventory = new Inventory();
         _SaveNow = false;
         _objType = ObjectType.PlayerObj;
         _SaveTimer = new System.Timers.Timer();
         _SaveTimer.Interval = _SaveTimerLength;
         _SaveTimer.Elapsed += OnTimedEvent;
         _SaveTimer.AutoReset = true;
-
-        _Inventory = new Inventory();
-        //_Inventory = new Inventory();
-        //SetUpComponent();
+        SetUpComponent();
+        _LookY = GetComponentInChildren<LookY>();
     }
 
     private void OnTimedEvent(object sender, ElapsedEventArgs e)
@@ -102,34 +110,41 @@ public class PlayerObj : MoveableObj
 
     void Update()
     {
-        CalculateMovement();
-        HieghtMaipulation();
-        CalculateLean();
-        if(!CanStand() && !IsStanding())
+        if(_FirstUpdate)
         {
-            if(!_SaveTimer.Enabled)
-                _SaveTimer.Enabled = true;
+            _Hand.AquireTorch();
+            _FirstUpdate = false;
+        }
+        if(!_Paused)
+        {
+            CalculateMovement();
+            HieghtMaipulation();
+            CalculateLean();
+            if (!CanStand() && !IsStanding())
+            {
+                if (!_SaveTimer.Enabled)
+                    _SaveTimer.Enabled = true;
                 _SaveTimer.Start();
-        }
-        else
-        {
-            _SaveTimer.Stop();
-            _SaveTimer.Enabled = false;
-        }
-        //To be Removed outside of debugging
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            _SaveNow = false;
-            SaveGame();
-            SceneManager.LoadScene("NewTestScene");
-        }
-        if(Input.GetKeyDown(KeyCode.L))
-        {
-            LoadGame();
-        }
-        if (_SaveNow)
-        {
-            SaveGame();
+            }
+            else
+            {
+                _SaveTimer.Stop();
+                _SaveTimer.Enabled = false;
+            }
+            //To be Removed outside of debugging
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                _SaveNow = false;
+                SaveGame();
+            }
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                LoadGame();
+            }
+            if (_SaveNow)
+            {
+                SaveGame();
+            }
         }
     }
 
@@ -138,7 +153,7 @@ public class PlayerObj : MoveableObj
     //https://www.tutorialspoint.com/Timer-in-Chash
 
 
-    private void LoadGame()
+    public void LoadGame()
     {
         if (System.IO.File.Exists(Application.persistentDataPath + "/gamesave.save"))
         {
@@ -179,7 +194,24 @@ public class PlayerObj : MoveableObj
         SaveGame();
     }
 
-    private void SaveGame()
+    public void Paused(bool b)
+    {
+        _Paused = b;
+        if(b)
+        {
+            _Hand.FreeCursor(b);
+            _LookX.enabled = false;
+            _LookY.enabled = false;
+        }         
+        else      
+        {
+            _Hand.FreeCursor(b);
+            _LookX.enabled = true;
+            _LookY.enabled = true;
+        }
+    }
+
+    public void SaveGame()
     {
         if(System.IO.File.Exists(Application.persistentDataPath + "/gamesave.save"))
         {
@@ -204,7 +236,19 @@ public class PlayerObj : MoveableObj
         Debug.Log("File saved at " + Application.persistentDataPath + "/gamesave.save");
     }
 
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Midpoint")
+        {
+            Debug.Log("Reached Midpoint");
+            _MidpointReached = true;
+        }
+        if (other.tag == "Endpoint" && _MidpointReached)
+        {
+            _EndReached = true;
+            Debug.Log("Reached endpoint");
+        }
+    }
     public Inventory ReturnInventory()
     {
         return _Inventory;
