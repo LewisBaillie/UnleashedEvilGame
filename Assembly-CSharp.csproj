@@ -106,7 +106,9 @@
     <Compile Include="Assets\Assets\Standard Assets\CrossPlatformInput\Scripts\InputAxisScrollbar.cs" />
     <Compile Include="Assets\Assets\Standard Assets\CrossPlatformInput\Scripts\AxisTouchButton.cs" />
     <Compile Include="Assets\Scripts\Objects\AI Scripts\AIScreamerGuyScript.cs" />
+    <Compile Include="Assets\Scripts\SoundDetection\MakeNoise.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Scripts\SunShafts.cs" />
+    <Compile Include="Assets\Scripts\SoundDetection\Listener.cs" />
     <Compile Include="Assets\Assets\Standard Assets\CrossPlatformInput\Scripts\ButtonHandler.cs" />
     <Compile Include="Assets\Scripts\Objects\Interactable Object Class\InteractableObj.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Characters\FirstPersonCharacter\Scripts\HeadBob.cs" />
@@ -136,6 +138,7 @@
     <Compile Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Scripts\CreaseShading.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Characters\FirstPersonCharacter\Scripts\RigidbodyFirstPersonController.cs" />
     <Compile Include="Assets\Assets\Standard Assets\CrossPlatformInput\Scripts\CrossPlatformInputManager.cs" />
+    <Compile Include="Assets\Scripts\AudioScripts\AmbientNoise.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Scripts\ContrastEnhance.cs" />
     <Compile Include="Assets\Assets\Soja Exiles\SE Basic Assets\Scripts and Animations\Drawer\X Axis\Drawer_Pull_X.cs" />
     <Compile Include="Assets\Assets\Soja Exiles\SE Basic Assets\Scripts and Animations\Drawer\Z Axis\Drawer_Pull_Z.cs" />
@@ -177,11 +180,12 @@
     <Compile Include="Assets\Scripts\Objects\Destructable walls\DestructableWalls.cs" />
     <Compile Include="Assets\Scripts\Input\LookY.cs" />
     <Compile Include="Assets\Assets\Standard Assets\Utility\AutoMobileShaderSwitch.cs" />
-    <Compile Include="Assets\Scripts\SoundDetection\Listener.cs" />
-    <Compile Include="Assets\Scripts\SoundDetection\MakeNoise.cs" />
+    <Compile Include="Assets\Scripts\AudioScripts\MonsterNoise.cs" />
+    <Compile Include="Assets\Scripts\AudioScripts\MonsterIdentifier.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Shaders\Tonemapper.shader" />
+     <None Include="Assets\Models\haunted-astolfo-bean-plushie-that\Source.txt" />
      <None Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Shaders\GlobalFog.shader" />
      <None Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Shaders\VortexEffect.shader" />
      <None Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseAndGrain.shader" />
@@ -265,6 +269,7 @@
      <None Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Luminance.shader" />
      <None Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlurAndFlares.shader" />
      <None Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\NFAA.shader" />
+     <None Include="Assets\Models\project-cirno-fumo-3d-scan\Source.txt" />
      <None Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset2.shader" />
      <None Include="Assets\Assets\Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
      <None Include="Assets\Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\TiltShiftHdrLensBlur.shader" />
@@ -930,6 +935,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="NavMeshComponentsEditor.csproj">
+      <Project>{3F7A4086-E474-FE38-2EBA-A21230940E77}</Project>
+      <Name>NavMeshComponentsEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="NavMeshComponents.csproj">
+      <Project>{73210B63-B4F7-DFBB-CD8D-D3ACE24EF48A}</Project>
+      <Name>NavMeshComponents</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
