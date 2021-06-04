@@ -13,8 +13,12 @@ public class AINavigationManager : MonoBehaviour
     [SerializeField]
     NavMeshSurface ceilingSurface;
     private GameObject Wall;
-    NavMeshSurface navSurface = GameObject.FindObjectOfType<NavMeshSurface>();
+    NavMeshSurface navSurface;
 
+    private void Awake()
+    {
+        navSurface = GameObject.FindObjectOfType<NavMeshSurface>();
+    }
     public void Regen()
     {
         DestroyNavMesh();

@@ -68,16 +68,29 @@ public class AIFunctions : MonoBehaviour
 
     //--------------------------State Control & Misc.-------------------------
     //Spot player
-    public void AISpotPlayer(NavMeshAgent agent, Transform target, string state)
+    public void AISpotPlayer(NavMeshAgent agent, Transform target, ref string state)
     {
         //if AI spots player in cone of vision
         state = "chase";
     }
     //Lost player
-    public void AILostPlayer(NavMeshAgent agent, Transform target, string state)
+    public void AILostPlayer(NavMeshAgent agent, Transform target, ref string state)
     {
         //if AI loses player
         state = "search"; //In bounding sphere around current position
+    }
+
+    //--------------------------Detection------------------------------------
+    public void AIDetectPlayer(NavMeshAgent agent, Transform target, ref string state, float x_distance, float z_distance, float totalDistance)
+    {
+        x_distance = agent.transform.position.x - target.position.x;
+        z_distance = agent.transform.position.z - target.position.z;
+        totalDistance = Mathf.Sqrt((x_distance * x_distance) + (z_distance * z_distance));
+        if (totalDistance <= 30.0f)
+        {
+            state = "chase";
+        }
+
     }
 }
 

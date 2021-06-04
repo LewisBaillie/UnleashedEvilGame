@@ -17,6 +17,10 @@ public class AIBigGuyScript : MonoBehaviour
     [SerializeField]
     private GameObject returnTarget;
 
+    private float m_xDistance;
+    private float m_zDistance;
+    private float m_hypotenuseDistance;
+
     GameObject player;
 
     // Start is called before the first frame update
@@ -69,6 +73,7 @@ public class AIBigGuyScript : MonoBehaviour
             {
                 state = "return";
             }
+            //agent.GetComponent<AIFunctions>().AIDetectPlayer(agent, target, ref state, m_xDistance, m_zDistance, m_hypotenuseDistance);
         }
         else if (state == "chase")
         {
