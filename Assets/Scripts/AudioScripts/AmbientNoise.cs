@@ -7,10 +7,6 @@ public class AmbientNoise : MonoBehaviour
 {
     [SerializeField]
     private AudioSource amb1;
-    [SerializeField]
-    private AudioSource amb2;
-    [SerializeField]
-    private AudioSource amb3;
 
     [SerializeField]
     private List<AudioClip> _ambAudioClips;
@@ -24,8 +20,6 @@ public class AmbientNoise : MonoBehaviour
     private void Awake()
     {
         amb1.clip = null;
-        amb2.clip = null;
-        amb3.clip = null;
         selectedAudioSource = null;
     }
 
@@ -33,46 +27,37 @@ public class AmbientNoise : MonoBehaviour
     {
         counter = 5f;
         previousCounter = counter;
+        selectedAudioSource = amb1;
     }
 
     private void Update()
     {
         counter -= Time.deltaTime;
 
-        if(counter <= 0f)
+        if(counter <= 0f && !selectedAudioSource.isPlaying)
         {
-            switch (Random.Range(0, 3))
-            {
-                case 0:
-                    selectedAudioSource = amb1;
-                    break;
-                case 1:
-                    selectedAudioSource = amb2;
-                    break;
-                case 2:
-                    selectedAudioSource = amb3;
-                    break;
-            }
-
             selectedAudioClip = _ambAudioClips[Random.Range(0, 3)];
 
             selectedAudioSource.clip = selectedAudioClip;
 
             selectedAudioSource.Play();
 
-            if(!selectedAudioSource.isPlaying)
-            {
-                selectedAudioSource.clip = null;
-                if(previousCounter < 6)
-                {
-                    counter = Random.Range(3, 6);
-                }
-                else
-                {
-                    counter = Random.Range(6, 9);
-                }
-                previousCounter = counter;
-            }
+            StartCoroutine(waitTime());
         }
+    }
+
+    private IEnumerator waitTime()
+    {
+        yield return new WaitForSeconds(2.0f);
+        selectedAudioSource.clip = null;
+        if (previousCounter < 6)
+        {
+            counter = Random.Range(3, 6);
+        }
+        else
+        {
+            counter = Random.Range(6, 9);
+        }
+        previousCounter = counter;
     }
 }
