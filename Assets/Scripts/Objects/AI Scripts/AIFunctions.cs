@@ -38,7 +38,22 @@ public class AIFunctions : MonoBehaviour
         if (timeLeft <= 0.0f)
         {
             agent.GetComponent<AIFunctions>().AIStartWander(agent);
-            timeLeft = 5.0f;
+            if (agent.tag == "BigMonster")
+            {
+                timeLeft = 12.0f;
+            }
+            else if (agent.tag == "KnifeMonster")
+            {
+                timeLeft = 8.0f;
+            }
+            else if (agent.tag == "CrawlerMonster")
+            {
+                timeLeft = 15.0f;
+            }
+            else if (agent.tag == "ScreamerMonster")
+            {
+                timeLeft = 25.0f;
+            }
         }
         return timeLeft;
     }

@@ -26,15 +26,13 @@ public class AIScreamerGuyScript : MonoBehaviour
     {
         if (state == "wander")
         {
+            agent.speed = 1;
             timeLeft = agent.GetComponent<AIFunctions>().AIUpdateWander(agent, timeLeft, "wander");
         }
         else if (state == "chase")
         {
+            agent.speed = 2;
             agent.GetComponent<AIFunctions>().AIUpdateChase(agent, target);
-        }
-        else if (state == "search")
-        {
-            //Search Update Function
         }
     }
 }

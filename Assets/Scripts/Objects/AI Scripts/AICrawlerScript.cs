@@ -10,7 +10,10 @@ public class AICrawlerScript : MonoBehaviour
     private Transform target;
     NavMeshAgent agent;
     string state;
+    string area;
     float timeLeft = 5.0f; //TIME IN SECONDS, starts from 5 & counts down
+    [SerializeField]
+    private GameObject returnTarget;
 
     GameObject player;
 
@@ -21,27 +24,49 @@ public class AICrawlerScript : MonoBehaviour
         state = "chase";
         agent.GetComponent<AIFunctions>().AIStartWander(agent);
         timeLeft = 6.0f;
+        player = GameObject.FindGameObjectWithTag("Player");
+        area = "CrawlerArea";
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "CrawlerTetherTrigger")
+        {
+            area = "CrawlerArea";
+        }
+        else if (other.tag == "OtherTetherTrigger")
+        {
+            area = "OtherArea";
+        }
+        else if (other.tag == "Player")
+        {
+            player.GetComponent<Death>().playerDie();
+        }   
+    }
     // Update is called once per frame
     void Update()
     {
         if (state == "wander")
         {
+            agent.speed = 2;
             timeLeft = agent.GetComponent<AIFunctions>().AIUpdateWander(agent, timeLeft, "wander");
+            if (area == "otherArea")
+            {
+                state = "return";
+            }
         }
         else if (state == "chase")
         {
+            agent.speed = 6;
             agent.GetComponent<AIFunctions>().AIUpdateChase(agent, target);
         }
-        else if (state == "search")
+        else if (state == "return")
         {
-            //Search Update Function
-        }
-
-        if (target.transform == agent.transform)
-        {
-            player.GetComponent<Death>().playerDie();
+            target = returnTarget.transform;
+            if (agent.transform == returnTarget.transform)
+            {
+                state = "wander";
+            }
         }
     }
 }
